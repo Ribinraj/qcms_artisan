@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/presentation/screens/screen_logipage/screen_loginpage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_mainpage/screen_mainpage.dart';
 
 
 // SINGLE ROUTE GENERATOR CLASS - This is all you need!
@@ -33,11 +36,11 @@ class AppRouter {
       //     builder: (_) => SplashScreen(),
       //     settings: settings,
       //   );
-      // case mainpage:
-      //   return MaterialPageRoute(
-      //     builder: (_) => ScreenMainPage(),
-      //     settings: settings,
-      //   );
+      case mainpage:
+        return MaterialPageRoute(
+          builder: (_) => ScreenMainPage(),
+          settings: settings,
+        );
 
       // case login:
       //   return MaterialPageRoute(
@@ -232,20 +235,20 @@ class CustomNavigation {
 }
 
 // // Updated navigation functions for your specific use case
-// void navigateToMainPageNamed(BuildContext context, int pageIndex) {
-//   CustomNavigation.pushReplacementNamedWithTransition(
-//     context,
-//     AppRouter.mainpage,
-//     arguments: {'pageIndex': pageIndex},
-//     beginOffset: Offset.zero, // For fade transition
-//   );
+void navigateToMainPageNamed(BuildContext context, int pageIndex) {
+  CustomNavigation.pushReplacementNamedWithTransition(
+    context,
+    AppRouter.mainpage,
+    arguments: {'pageIndex': pageIndex},
+    beginOffset: Offset.zero, // For fade transition
+  );
 
-//   Future.delayed(const Duration(milliseconds: 100), () {
-//     BlocProvider.of<BottomNavigationBloc>(
-//       context,
-//     ).add(NavigateToPageEvent(pageIndex: pageIndex));
-//   });
-// }
+  Future.delayed(const Duration(milliseconds: 100), () {
+    BlocProvider.of<BottomNavigationBloc>(
+      context,
+    ).add(NavigateToPageEvent(pageIndex: pageIndex));
+  });
+}
 
 /*
 USAGE EXAMPLES:

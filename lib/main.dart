@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
 
-void main() async{
-    WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setSystemUIOverlayStyle(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -26,25 +28,27 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-      ResponsiveUtils().init(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: AppRouter.login,
-          onUnknownRoute: (settings) => MaterialPageRoute(
-            builder: (_) => Scaffold(
-              appBar: AppBar(title: const Text('404')),
-              body: const Center(child: Text('Page not found')),
-            ),
+    ResponsiveUtils().init(context);
+    return BlocProvider(
+      create: (context) => BottomNavigationBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: AppRouter.login,
+        onUnknownRoute: (settings) => MaterialPageRoute(
+          builder: (_) => Scaffold(
+            appBar: AppBar(title: const Text('404')),
+            body: const Center(child: Text('Page not found')),
           ),
-      title: 'QCMS_Artisan',
-      theme: ThemeData(
-   fontFamily: 'Helvetica',
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            scaffoldBackgroundColor: Appcolors.kbackgroundcolor,
+        ),
+        title: 'QCMS_Artisan',
+        theme: ThemeData(
+          fontFamily: 'Helvetica',
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          scaffoldBackgroundColor: Appcolors.kbackgroundcolor,
+        ),
       ),
-   
     );
   }
 }

@@ -68,7 +68,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: _isFocused
-                  ? Appcolors.kSecondaryColor
+                  ? Appcolors.ksecondaryColor
                   : Appcolors.kTertiaryColor.withAlpha(133),
               width: 1,
             ),
@@ -96,7 +96,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             readOnly: widget.readOnly,
             style: const TextStyle(
               fontSize: 16,
-              color: Appcolors.kSecondaryColor,
+              color: Appcolors.ksecondaryColor,
             ),
             decoration: InputDecoration(
               hintText: widget.hint,

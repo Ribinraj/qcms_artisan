@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/widgets/custom_routes.dart';
 import 'package:qcms_artisan/widgets/custom_textfield.dart';
 import 'package:qcms_artisan/widgets/customloginbutton.dart';
 
@@ -36,7 +37,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
               flex: 1,
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(color: Appcolors.kPrimaryColor),
+                decoration: const BoxDecoration(color: Appcolors.kprimaryColor),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -45,7 +46,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       width: ResponsiveUtils.wp(60),
                       height: ResponsiveUtils.hp(20),
                       decoration: BoxDecoration(
-                        color: Appcolors.kPrimaryColor,
+                        color: Appcolors.kprimaryColor,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
@@ -59,7 +60,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                     ),
                     ResponsiveSizedBox.height30,
                     TextStyles.headline(
-                      text: 'Welcome Back',
+                      text: 'Artisan Connect ',
                       color: Appcolors.kTertiaryColor,
                     ),
                     ResponsiveSizedBox.height10,
@@ -112,7 +113,15 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
 
                       ResponsiveSizedBox.height30,
 
-                      Customloginbutton(onPressed: () {}, text: 'Send OTP'),
+                      Customloginbutton(
+                        onPressed: () {
+                          CustomNavigation.pushNamedWithTransition(
+                            context,
+                            AppRouter.mainpage,
+                          );
+                        },
+                        text: 'Send OTP',
+                      ),
 
                       ResponsiveSizedBox.height30,
 
@@ -151,7 +160,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                             Container(
                               height: 20,
                               width: 1,
-                              color: Appcolors.kPrimaryColor.withOpacity(.4),
+                              color: Appcolors.kprimaryColor.withOpacity(.4),
                             ),
                             TextButton.icon(
                               onPressed: () {},
