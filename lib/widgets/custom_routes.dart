@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
+import 'package:qcms_artisan/presentation/screens/screen_complaintdetailspage/screen_complaintdetailspage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_logipage/screen_loginpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_mainpage/screen_mainpage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_otppage/screen_otppage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_splashpage/screen_splashpage.dart';
 
 
 // SINGLE ROUTE GENERATOR CLASS - This is all you need!
@@ -31,22 +34,22 @@ class AppRouter {
           builder: (_) => ScreenLoginpage(),
           settings: settings,
         );
-      // case splashpage:
-      //   return MaterialPageRoute(
-      //     builder: (_) => SplashScreen(),
-      //     settings: settings,
-      //   );
+      case splashpage:
+        return MaterialPageRoute(
+          builder: (_) => SplashScreen(),
+          settings: settings,
+        );
       case mainpage:
         return MaterialPageRoute(
           builder: (_) => ScreenMainPage(),
           settings: settings,
         );
 
-      // case login:
-      //   return MaterialPageRoute(
-      //     builder: (_) => ScreenLoginpage(), // Replace with your actual screen
-      //     settings: settings,
-      //   );
+      case complaintdetails:
+        return MaterialPageRoute(
+          builder: (_) => ScreenComplaintdetailsPage(),
+          settings: settings,
+        );
       // case register:
       //   return MaterialPageRoute(
       //     builder: (_) =>
@@ -59,22 +62,22 @@ class AppRouter {
       //         ScreenRequestformPage(), // Replace with your actual screen
       //     settings: settings,
       //   );
-      // case verifyOTP:
-      //   final flatId = args?['flatId'] as String?;
-      //   final mobileNumber = args?['mobileNumber'] as String?;
+      case verifyOTP:
+        final flatId = args?['flatId'] as String?;
+        final mobileNumber = args?['mobileNumber'] as String?;
 
-      //   // Option 1: Required parameters (your current approach)
-      //   if (flatId != null && mobileNumber != null) {
-      //     return MaterialPageRoute(
-      //       builder: (_) =>
-      //           ScreenVerifyOtp(flatId: flatId, mobileNumber: mobileNumber),
-      //       settings: settings,
-      //     );
-      //   } else {
-      //     return _errorRoute(
-      //       'Missing required parameters for Verify OTP: flatId and mobileNumber',
-      //     );
-      //   }
+        // Option 1: Required parameters (your current approach)
+        if (flatId != null && mobileNumber != null) {
+          return MaterialPageRoute(
+            builder: (_) =>
+                ScreenVerifyOtp(flatId: flatId, mobileNumber: mobileNumber),
+            settings: settings,
+          );
+        } else {
+          return _errorRoute(
+            'Missing required parameters for Verify OTP: flatId and mobileNumber',
+          );
+        }
 
       // case complaintdetails:
       //   final complaint = args?['complaintdetails'] as ComplaintListmodel?;

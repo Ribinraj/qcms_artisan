@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.login,
+        initialRoute: AppRouter.splashpage,
         onUnknownRoute: (settings) => MaterialPageRoute(
           builder: (_) => Scaffold(
             appBar: AppBar(title: const Text('404')),

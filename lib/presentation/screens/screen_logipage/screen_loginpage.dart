@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/presentation/screens/screen_otppage/screen_otppage.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
 import 'package:qcms_artisan/widgets/custom_textfield.dart';
 import 'package:qcms_artisan/widgets/customloginbutton.dart';
@@ -117,7 +118,11 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                         onPressed: () {
                           CustomNavigation.pushNamedWithTransition(
                             context,
-                            AppRouter.mainpage,
+                            AppRouter.verifyOTP,
+                            arguments: {
+                              'mobileNumber': '9946802969',
+                              'flatId': '969',
+                            },
                           );
                         },
                         text: 'Send OTP',

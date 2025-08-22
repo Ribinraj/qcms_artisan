@@ -172,7 +172,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label: "Solved",
+              label: "Completed",
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(

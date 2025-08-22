@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
+import 'package:qcms_artisan/core/responsiveutils.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
+import 'package:qcms_artisan/widgets/custom_networkimage.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
 
 class ScreenDashboardpage extends StatefulWidget {
@@ -18,117 +21,139 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
       appBar: CustomAppBar(title: 'Dashboard'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Section
-            CustomPaint(
-              painter: HeaderPainter(),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Indian Railways",
-
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Appcolors.kwhitecolor,
-                        letterSpacing: 1,
+        child: AnimationLimiter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Section with animation
+              AnimationConfiguration.staggeredList(
+                position: 0,
+                duration: const Duration(milliseconds: 600),
+                child: SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(
+                    child: CustomPaint(
+                      painter: HeaderPainter(),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Indian Railways",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Appcolors.kwhitecolor,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            ResponsiveSizedBox.height10,
+                            Text(
+                              "QCMS for Artisans",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            ResponsiveSizedBox.height5,
+                            Text(
+                              "Designed & Developed by Crisant Tecchnologies",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: const Color.fromARGB(255, 231, 142, 40),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    ResponsiveSizedBox.height10,
-
-                    Text(
-                      "QCMS for Artisans",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    ResponsiveSizedBox.height5,
-                    Text(
-                      "Designed & Developed by Crisant Tecchnologies",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: const Color.fromARGB(255, 231, 142, 40),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
 
-            ResponsiveSizedBox.height40,
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.1,
-              children: [
-                _buildStatCard(
-                  title: "dashboard ",
-                  value: '8',
+              ResponsiveSizedBox.height20,
 
-                  color: Appcolors.ksecondaryColor,
-                ),
-                _buildStatCard(
-                  title: "dashboard ",
-                  value: "6",
-
-                  color: Appcolors.ksecondaryColor,
-                ),
-                _buildStatCard(
-                  title: "dashboard ",
-                  value: "7",
-
-                  color: Appcolors.ksecondaryColor,
-                ),
-                _buildStatCard(
-                  title: "dashboard ",
-                  value: "8",
-
-                  color: Appcolors.ksecondaryColor,
-                ),
-              ],
-            ),
-
-            ResponsiveSizedBox.height40,
-
-            // Action Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    title: "Complaints",
-                    icon: Icons.add,
-                    onPressed: () {
-                      navigateToMainPageNamed(context, 1);
-                    },
-                    color: Appcolors.kprimaryColor,
+              // Image Section with animation
+              AnimationConfiguration.staggeredList(
+                position: 1, // keep position in sequence
+                duration: const Duration(milliseconds: 600),
+                child: SlideAnimation(
+                  verticalOffset: 30.0,
+                  child: FadeInAnimation(
+                    child: ImageWithFallback(
+                      height: ResponsiveUtils.hp(34),
+                      width: ResponsiveUtils.screenWidth,
+                      showBorder: false,
+                      imageUrl:
+                          'https://img.pikbest.com/png-images/20240702/editable-black-construction-worker-silhouette-vector-image-on-transparent-background_10647095.png!bw700',
+                    ),
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildActionButton(
-                    title: "Solved",
-                    icon: Icons.visibility,
-                    onPressed: () {
-                      navigateToMainPageNamed(context, 2);
-                    },
-                    color: Appcolors.ksecondaryColor,
+              ),
+
+              ResponsiveSizedBox.height20,
+              AnimationConfiguration.staggeredList(
+                position: 1,
+                duration: const Duration(milliseconds: 600),
+                child: SlideAnimation(
+                  verticalOffset: 30.0,
+                  child: FadeInAnimation(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Section Title
+                        Row(
+                          children: [
+                            Container(
+                              width: 4,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: Appcolors.kprimaryColor,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              "Complaints Overview",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade800,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ResponsiveSizedBox.height20,
+                        Row(
+                          children: [
+                            _buildStatCard(
+                              title: 'Open Complaints',
+                              value: '5',
+                              color: Appcolors.kprimaryColor,
+                            ),
+                            Spacer(),
+                            _buildStatCard(
+                              title: 'Solved Complaints',
+                              value: '2',
+                              color: Appcolors.kprimaryColor,
+                            ),
+                          ],
+                        ),
+                        ResponsiveSizedBox.height20,
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+
+              ResponsiveSizedBox.height20,
+            ],
+          ),
         ),
       ),
     );
@@ -137,13 +162,16 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
   Widget _buildStatCard({
     required String title,
     required String value,
-
     required Color color,
   }) {
     return CustomPaint(
       painter: EnhancedCardPainter(color: color, radius: 10),
       child: Container(
-        padding: const EdgeInsets.all(10),
+        width: ResponsiveUtils.wp(43),
+        padding: EdgeInsets.symmetric(
+          vertical: 12,
+          //horizontal: ResponsiveUtils.wp(3),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +184,6 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                 color: Appcolors.kwhitecolor,
               ),
             ),
-
             const SizedBox(height: 8),
             Text(
               title,
@@ -164,60 +191,10 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
               style: const TextStyle(
                 fontSize: 15,
                 color: Appcolors.kwhitecolor,
-                // shadows: [
-                //   Shadow(
-                //     offset: Offset(2.0, 2.0), // x, y position of the shadow
-                //     blurRadius: 4.0, // how blurry the shadow is
-                //     color: Color.fromARGB(255, 118, 101, 101), // shadow color
-                //   ),
-                // ],
                 fontWeight: FontWeight.bold,
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-  // Widget _buildStatLoadingCard() {
-  //   return CustomPaint(
-  //     painter: EnhancedCardPainter(color:Appcolors.ksecondaryColor, radius: 10),
-  //     child:Container(
-
-  //       child: Center(child: SpinKitCircle(size: 15,color: Appcolors.kwhitecolor,),)),
-
-  //   );
-  // }
-  Widget _buildActionButton({
-    required String title,
-    required IconData icon,
-    required VoidCallback onPressed,
-    required Color color,
-  }) {
-    return CustomPaint(
-      painter: ButtonPainter(color: color, radius: 8),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, color: Appcolors.kwhitecolor, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Appcolors.kwhitecolor,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -251,7 +228,7 @@ class HeaderPainter extends CustomPainter {
 
     // Add subtle decoration
     final decorPaint = Paint()
-      ..color = Appcolors.kwhitecolor.withOpacity(0.1)
+      ..color = Appcolors.kwhitecolor.withOpacity(0.12)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
