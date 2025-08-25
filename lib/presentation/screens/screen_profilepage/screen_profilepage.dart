@@ -1,7 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
+import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_profile_bloc/fetch_profile_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/language_cubit/language_cubit.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
 
 class ScreenProfilepage extends StatefulWidget {
@@ -16,15 +21,51 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
   bool isLanguageExpanded = false;
   bool isPushNotificationsEnabled = true;
 
-  // Add these variables for user info
-  String userName = "Akbar";
-  String mobileNumber = "+91 9876543210"; // Replace with actual mobile number
-
   final Map<String, Map<String, String>> languages = {
     'English': {'code': 'en', 'display': 'English'},
     'Hindi': {'code': 'hi', 'display': 'हिन्दी'},
     'Kannada': {'code': 'kn', 'display': 'ಕನ್ನಡ'},
   };
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<FetchProfileBloc>().add(FetchProfileInitialEvent());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedLanguage();
+  }
+
+  // Load the saved language from SharedPreferences and current context
+  void _loadSavedLanguage() {
+    try {
+      // Get current app locale
+      final currentLocale = context.locale;
+
+      // Find the matching language key based on locale code
+      String languageKey = 'English'; // default
+
+      for (var entry in languages.entries) {
+        if (entry.value['code'] == currentLocale.languageCode) {
+          languageKey = entry.key;
+          break;
+        }
+      }
+
+      // Only update if the language has actually changed to avoid unnecessary rebuilds
+      if (selectedLanguage != languageKey) {
+        setState(() {
+          selectedLanguage = languageKey;
+        });
+      }
+    } catch (e) {
+      print('Error loading saved language: $e');
+      // Keep default English if there's an error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,82 +77,125 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // User Profile Header Section
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Appcolors.kprimaryColor, Appcolors.ksecondaryColor],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Appcolors.kprimaryColor.withAlpha(77),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  // User Avatar
-                  Container(
-                    width: 80,
-                    height: 80,
+            BlocBuilder<FetchProfileBloc, FetchProfileState>(
+              builder: (context, state) {
+                if (state is FetchProfileLoadingState) {
+                  return Container(
+                    width: double.infinity,
+                    height: ResponsiveUtils.hp(25),
+                    padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Appcolors.kTertiaryColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Appcolors.kwhitecolor,
-                        width: 2,
+                      gradient: LinearGradient(
+                        colors: [
+                          Appcolors.kprimaryColor,
+                          Appcolors.ksecondaryColor,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Appcolors.kprimaryColor.withAlpha(77),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
                     child: Center(
-                      child: Text(
-                        "A",
-                        style: TextStyle(
-                          color: Appcolors.kwhitecolor,
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: SpinKitCircle(
+                        size: 20,
+                        color: Appcolors.kwhitecolor,
                       ),
                     ),
-                  ),
-                  ResponsiveSizedBox.height15,
-                  // User Name
-                  Text(
-                    userName,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Appcolors.kwhitecolor,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Mobile Number
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.phone_android_rounded,
-                        size: 18,
-                        color: Appcolors.kwhitecolor.withAlpha(230),
+                  );
+                } else if (state is FetchProfileSuccessState) {
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Appcolors.kprimaryColor,
+                          Appcolors.ksecondaryColor,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        mobileNumber,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Appcolors.kwhitecolor.withAlpha(230),
-                          fontWeight: FontWeight.w500,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Appcolors.kprimaryColor.withAlpha(77),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        // User Avatar
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Appcolors.kTertiaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Appcolors.kwhitecolor,
+                              width: 2,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              state.user.artisanName.substring(0, 1),
+                              style: TextStyle(
+                                color: Appcolors.kwhitecolor,
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        ResponsiveSizedBox.height15,
+                        // User Name
+                        Text(
+                          state.user.artisanName,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Appcolors.kwhitecolor,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        // Mobile Number
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.phone_android_rounded,
+                              size: 18,
+                              color: Appcolors.kwhitecolor.withAlpha(230),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              state.user.artisanMobile,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Appcolors.kwhitecolor.withAlpha(230),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (state is FetchProfileErrorState) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
             ),
 
             const SizedBox(height: 32),
@@ -331,14 +415,14 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        // setState(() {
-                        //   selectedLanguage = entry.key;
-                        //   isLanguageExpanded = false;
-                        // });
-                        // context.read<LanguageCubit>().changeLanguage(
-                        //   context,
-                        //   Locale(entry.value['code']!),
-                        // );
+                        setState(() {
+                          selectedLanguage = entry.key;
+                          isLanguageExpanded = false;
+                        });
+                        context.read<LanguageCubit>().changeLanguage(
+                          context,
+                          Locale(entry.value['code']!),
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

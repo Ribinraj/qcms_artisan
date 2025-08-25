@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/presentation/screens/screen_complaintdetailspage/screen_complaintdetailspage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_completed_complaintdetailspage.dart/screen_completedcomplaint_detailspage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_logipage/screen_loginpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_mainpage/screen_mainpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_otppage/screen_otppage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_splashpage/screen_splashpage.dart';
-
 
 // SINGLE ROUTE GENERATOR CLASS - This is all you need!
 class AppRouter {
@@ -16,7 +16,7 @@ class AppRouter {
   static const String profile = '/profile';
   static const String cart = '/cart';
   static const String dashboard = '/dashboard';
-
+  static const String completedcomplaintdetails = '/completedcomplaintdetauls';
 
   static const String verifyOTP = '/verifyOTP';
   static const String complaintdetails = '/complaintdetails';
@@ -56,21 +56,21 @@ class AppRouter {
       //         ScreenRegisterpage(), // Replace with your actual screen
       //     settings: settings,
       //   );
-      // case requestform:
-      //   return MaterialPageRoute(
-      //     builder: (_) =>
-      //         ScreenRequestformPage(), // Replace with your actual screen
-      //     settings: settings,
-      //   );
+      case completedcomplaintdetails:
+        return MaterialPageRoute(
+          builder: (_) =>
+              ScreenCompletedcomplaintDetailspage(), // Replace with your actual screen
+          settings: settings,
+        );
       case verifyOTP:
-        final flatId = args?['flatId'] as String?;
+        final artisanId = args?['artisanId'] as String?;
         final mobileNumber = args?['mobileNumber'] as String?;
 
         // Option 1: Required parameters (your current approach)
-        if (flatId != null && mobileNumber != null) {
+        if (artisanId != null && mobileNumber != null) {
           return MaterialPageRoute(
             builder: (_) =>
-                ScreenVerifyOtp(flatId: flatId, mobileNumber: mobileNumber),
+                ScreenVerifyOtp(artisanId: artisanId, mobileNumber: mobileNumber),
             settings: settings,
           );
         } else {

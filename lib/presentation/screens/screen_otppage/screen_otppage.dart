@@ -9,18 +9,21 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/presentation/bloc/resend_otp_bloc/resend_otp_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
+import 'package:qcms_artisan/widgets/custom_snackbar.dart';
 
 class ScreenVerifyOtp extends StatefulWidget {
-  final String flatId;
+  final String artisanId;
 
   final String mobileNumber;
   const ScreenVerifyOtp({
-    Key? key,
-    required this.flatId,
+    super.key,
+    required this.artisanId,
 
     required this.mobileNumber,
-  }) : super(key: key);
+  });
 
   @override
   State<ScreenVerifyOtp> createState() => _ScreenVerifyOtpState();
@@ -97,9 +100,9 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
     _resetResendTimer();
 
     // Call resend OTP API
-    // context.read<ResendOtpBloc>().add(
-    //   ResendOtpClickEvent(flatId: widget.flatId),
-    // );
+    context.read<ResendOtpBloc>().add(
+      ResendOtpClickEvent(artisanId: widget.artisanId),
+    );
   }
 
   @override
@@ -195,39 +198,40 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
 
                   const SizedBox(height: 40),
 
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        CustomNavigation.pushNamedWithTransition(
-                          context,
-                          AppRouter.mainpage,
-                        );
-                      },
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   height: 50,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       CustomNavigation.pushNamedWithTransition(
+                  //         context,
+                  //         AppRouter.mainpage,
+                  //       );
+                  //     },
 
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _isButtonEnabled
-                            ? Appcolors.kprimaryColor
-                            : Colors.grey.shade400,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
-                        'Verify',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: _isButtonEnabled
+                  //           ? Appcolors.kprimaryColor
+                  //           : Colors.grey.shade400,
+                  //       foregroundColor: Colors.white,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(30),
+                  //       ),
+                  //     ),
+                  //     child: const Text(
+                  //       'Verify',
+                  //       style: TextStyle(
+                  //         fontSize: 15,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  _buildVerifyButton(),
                   const SizedBox(height: 24),
 
                   // Timer and Resend Section
-                  //_buildTimerOrResend(),
+                  _buildTimerOrResend(),
                 ],
               ),
             ),
@@ -237,122 +241,122 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
     );
   }
 
-  // Widget _buildVerifyButton() {
-  //   return BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
-  //     listener: (context, state) async {
-  //       if (state is VerifyOtpSuccessState) {
-  //          final pushNotifications = PushNotifications.instance;
-  //          await pushNotifications.init();
-  //         await PushNotifications().sendTokenToServer();
-  //         CustomNavigation.pushReplacementNamedWithTransition(
-  //           context,
-  //           AppRouter.mainpage,
-  //         );
-  //       } else if (state is VerifyOtpErrorState) {
-  //         CustomSnackbar.show(
-  //           context,
-  //           message: state.message,
-  //           type: SnackbarType.error,
-  //         );
-  //       }
-  //     },
-  //     builder: (context, state) {
-  //       if (state is VerifyOtpLoadingState) {
-  //         return Container(
-  //           width: double.infinity,
-  //           height: 50,
-  //           decoration: BoxDecoration(
-  //             color: Appcolors.kprimaryColor,
-  //             borderRadius: BorderRadius.circular(30),
-  //           ),
-  //           child: const Center(
-  //             child: SpinKitWave(size: 18, color: Appcolors.kwhitecolor),
-  //           ),
-  //         );
-  //       }
+  Widget _buildVerifyButton() {
+    return BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
+      listener: (context, state) async {
+        if (state is VerifyOtpSuccessState) {
+          //  final pushNotifications = PushNotifications.instance;
+          //  await pushNotifications.init();
+          // await PushNotifications().sendTokenToServer();
+          CustomNavigation.pushReplacementNamedWithTransition(
+            context,
+            AppRouter.mainpage,
+          );
+        } else if (state is VerifyOtpErrorState) {
+          CustomSnackbar.show(
+            context,
+            message: state.message,
+            type: SnackbarType.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is VerifyOtpLoadingState) {
+          return Container(
+            width: double.infinity,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Appcolors.kprimaryColor,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: const Center(
+              child: SpinKitWave(size: 18, color: Appcolors.kwhitecolor),
+            ),
+          );
+        }
 
-  //       return SizedBox(
-  //         width: double.infinity,
-  //         height: 50,
-  //         child: ElevatedButton(
-  //           onPressed: _isButtonEnabled
-  //               ? () {
-  //                   if (_currentOtp.length == 4) {
-  //                     context.read<VerifyOtpBloc>().add(
-  //                       VerifyOtpButtonClickEvent(
-  //                         otp: _currentOtp,
-  //                         flatId: widget.flatId,
-  //                       ),
-  //                     );
-  //                   } else {
-  //                     CustomSnackbar.show(
-  //                       context,
-  //                       message: 'Please fill all required fields',
-  //                       type: SnackbarType.error,
-  //                     );
-  //                   }
-  //                 }
-  //               : null,
-  //           style: ElevatedButton.styleFrom(
-  //             backgroundColor: _isButtonEnabled
-  //                 ? Appcolors.kprimaryColor
-  //                 : Colors.grey.shade400,
-  //             foregroundColor: Colors.white,
-  //             shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(30),
-  //             ),
-  //           ),
-  //           child: const Text(
-  //             'Verify',
-  //             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+        return SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: _isButtonEnabled
+                ? () {
+                    if (_currentOtp.length == 4) {
+                      context.read<VerifyOtpBloc>().add(
+                        VerifyOtpButtonClickEvent(
+                          otp: _currentOtp,
+                          artisanId: widget.artisanId,
+                        ),
+                      );
+                    } else {
+                      CustomSnackbar.show(
+                        context,
+                        message: 'Please fill all required fields',
+                        type: SnackbarType.error,
+                      );
+                    }
+                  }
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _isButtonEnabled
+                  ? Appcolors.kprimaryColor
+                  : Colors.grey.shade400,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            child: const Text(
+              'Verify',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-  // Widget _buildTimerOrResend() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       TextStyles.medium(
-  //         text: "Didn't receive the code? ",
-  //         weight: FontWeight.bold,
-  //       ),
-  //       BlocConsumer<ResendOtpBloc, ResendOtpState>(
-  //         listener: (context, state) {
-  //           if (state is ResendOtpSuccessState) {
-  //             CustomSnackbar.show(
-  //               context,
-  //               message:
-  //                   "OTP has been sent on your Mobile Number ${widget.mobileNumber}.",
-  //               type: SnackbarType.success,
-  //             );
-  //           } else if (state is ResendOtpErrorState) {
-  //             CustomSnackbar.show(
-  //               context,
-  //               message: state.message,
-  //               type: SnackbarType.error,
-  //             );
-  //           }
-  //         },
-  //         builder: (context, state) {
-  //           return TextButton(
-  //             onPressed: _resendTimer == 0 ? () => _resendOtp() : null,
-  //             child: TextStyles.body(
-  //               text: _resendTimer > 0
-  //                   ? 'Resend in $_resendTimer seconds'
-  //                   : 'Resend',
-  //               weight: FontWeight.w600,
-  //               color: _resendTimer > 0
-  //                   ? Colors.grey.shade500
-  //                   : Appcolors.kredcolor,
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
+  Widget _buildTimerOrResend() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextStyles.medium(
+          text: "Didn't receive the code? ",
+          weight: FontWeight.bold,
+        ),
+        BlocConsumer<ResendOtpBloc, ResendOtpState>(
+          listener: (context, state) {
+            if (state is ResendOtpSuccessState) {
+              CustomSnackbar.show(
+                context,
+                message:
+                    "OTP has been sent on your Mobile Number ${widget.mobileNumber}.",
+                type: SnackbarType.success,
+              );
+            } else if (state is ResendOtpErrorState) {
+              CustomSnackbar.show(
+                context,
+                message: state.message,
+                type: SnackbarType.error,
+              );
+            }
+          },
+          builder: (context, state) {
+            return TextButton(
+              onPressed: _resendTimer == 0 ? () => _resendOtp() : null,
+              child: TextStyles.body(
+                text: _resendTimer > 0
+                    ? 'Resend in $_resendTimer seconds'
+                    : 'Resend',
+                weight: FontWeight.w600,
+                color: _resendTimer > 0
+                    ? Colors.grey.shade500
+                    : Appcolors.kredcolor,
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
 }

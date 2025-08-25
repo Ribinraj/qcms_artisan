@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_dashboard_bloc/fetch_dashboard_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
 import 'package:qcms_artisan/widgets/custom_networkimage.dart';
-import 'package:qcms_artisan/widgets/custom_routes.dart';
 
 class ScreenDashboardpage extends StatefulWidget {
   const ScreenDashboardpage({super.key});
@@ -16,9 +19,16 @@ class ScreenDashboardpage extends StatefulWidget {
 
 class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<FetchDashboardBloc>().add(FetchDashboardInitialEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Dashboard'),
+      appBar: CustomAppBar(title: "dashboard title".tr()),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: AnimationLimiter(
@@ -62,7 +72,7 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                             Text(
                               "Designed & Developed by Crisant Tecchnologies",
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 11,
                                 color: const Color.fromARGB(255, 231, 142, 40),
                                 fontWeight: FontWeight.w400,
                               ),
@@ -84,12 +94,15 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                 child: SlideAnimation(
                   verticalOffset: 30.0,
                   child: FadeInAnimation(
-                    child: ImageWithFallback(
-                      height: ResponsiveUtils.hp(34),
-                      width: ResponsiveUtils.screenWidth,
-                      showBorder: false,
-                      imageUrl:
-                          'https://img.pikbest.com/png-images/20240702/editable-black-construction-worker-silhouette-vector-image-on-transparent-background_10647095.png!bw700',
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(12),
+                      child: Image.asset(
+                        "assets/images/6405833_25693.jpg", // replace with your asset path
+                        height: ResponsiveUtils.hp(34),
+                        width: ResponsiveUtils.screenWidth,
+                        fit: BoxFit
+                            .cover, // keeps aspect ratio inside given size
+                      ),
                     ),
                   ),
                 ),
@@ -128,20 +141,76 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                           ],
                         ),
                         ResponsiveSizedBox.height20,
-                        Row(
-                          children: [
-                            _buildStatCard(
-                              title: 'Open Complaints',
-                              value: '5',
-                              color: Appcolors.kprimaryColor,
-                            ),
-                            Spacer(),
-                            _buildStatCard(
-                              title: 'Solved Complaints',
-                              value: '2',
-                              color: Appcolors.kprimaryColor,
-                            ),
-                          ],
+                        BlocBuilder<FetchDashboardBloc, FetchDashboardState>(
+                          builder: (context, state) {
+                            if (state is FetchDashboardLoadingState) {
+                              return Row(
+                                children: [
+                                  CustomPaint(
+                                    painter: EnhancedCardPainter(
+                                      color: Appcolors.kprimaryColor,
+                                      radius: 10,
+                                    ),
+                                    child: Container(
+                                      width: ResponsiveUtils.wp(43),
+                                      height: ResponsiveUtils.hp(13),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        //horizontal: ResponsiveUtils.wp(3),
+                                      ),
+                                      child: Center(
+                                        child: SpinKitCircle(
+                                          size: 17,
+                                          color: Appcolors.kwhitecolor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  CustomPaint(
+                                    painter: EnhancedCardPainter(
+                                      color: Appcolors.kprimaryColor,
+                                      radius: 10,
+                                    ),
+                                    child: Container(
+                                      width: ResponsiveUtils.wp(43),
+                                      height: ResponsiveUtils.hp(13),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        //horizontal: ResponsiveUtils.wp(3),
+                                      ),
+                                      child: Center(
+                                        child: SpinKitCircle(
+                                          size: 17,
+                                          color: Appcolors.kwhitecolor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else if (state is FetchDashboardSuccessState) {
+                              return Row(
+                                children: [
+                                  _buildStatCard(
+                                    title: 'Open Complaints',
+                                    value: state.dashboard.openComplaints,
+                                    color: Appcolors.kprimaryColor,
+                                  ),
+                                  Spacer(),
+                                  _buildStatCard(
+                                    title: 'Solved Complaints',
+                                    value: state.dashboard.completedComplaints,
+                                    color: Appcolors.kprimaryColor,
+                                  ),
+                                ],
+                              );
+                            } else if (state is FetchDashboardErrorState) {
+                              return Center(child: Text(state.message));
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          },
                         ),
                         ResponsiveSizedBox.height20,
                         const SizedBox(height: 20),
@@ -205,7 +274,7 @@ class HeaderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Appcolors.kprimaryColor
+      ..color = const Color.fromARGB(255, 17, 80, 62)
       ..style = PaintingStyle.fill;
 
     final path = Path();
@@ -228,7 +297,7 @@ class HeaderPainter extends CustomPainter {
 
     // Add subtle decoration
     final decorPaint = Paint()
-      ..color = Appcolors.kwhitecolor.withOpacity(0.12)
+      ..color = Appcolors.kwhitecolor.withOpacity(0.2)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(

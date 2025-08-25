@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
-import 'package:qcms_artisan/presentation/screens/screen_otppage/screen_otppage.dart';
+import 'package:qcms_artisan/presentation/bloc/send_otp_bloc/send_otp_bloc.dart';
+import 'package:qcms_artisan/widgets/custom_loginloadingbutton.dart';
+
 import 'package:qcms_artisan/widgets/custom_routes.dart';
+import 'package:qcms_artisan/widgets/custom_snackbar.dart';
 import 'package:qcms_artisan/widgets/custom_textfield.dart';
 import 'package:qcms_artisan/widgets/customloginbutton.dart';
 
@@ -113,20 +117,68 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       ),
 
                       ResponsiveSizedBox.height30,
-
-                      Customloginbutton(
-                        onPressed: () {
-                          CustomNavigation.pushNamedWithTransition(
-                            context,
-                            AppRouter.verifyOTP,
-                            arguments: {
-                              'mobileNumber': '9946802969',
-                              'flatId': '969',
-                            },
-                          );
-                        },
-                        text: 'Send OTP',
-                      ),
+                          BlocConsumer<SendOtpBloc, SendOtpState>(
+                listener: (context, state) {
+                  if (state is SendOtpSuccess) {
+                    CustomSnackbar.show(
+                      context,
+                      message:
+                          "OTP has been sent on your Mobile Number ${mobileController.text}.",
+                      type: SnackbarType.success,
+                    );
+                    CustomNavigation.pushReplacementNamedWithTransition(
+                      context,
+                      AppRouter.verifyOTP,
+                      arguments: {
+                        'mobileNumber':mobileController.text,
+                        'artisanId': state.artisanId,
+                      },
+                    );
+                  } else if (state is SendOtpFailure) {
+                    CustomSnackbar.show(
+                      context,
+                      message: state.error,
+                      type: SnackbarType.error,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is SendOtpLoadingState) {
+                    return Customloginloadingbutton();
+                  }
+                  return Customloginbutton(
+                    onPressed: () {
+                      if (_formkey.currentState!.validate()) {
+                        context.read<SendOtpBloc>().add(
+                          SendOtpButtonClickEvent(
+                            mobileNumber:mobileController.text,
+                          ),
+                        );
+                      } else {
+                        CustomSnackbar.show(
+                          context,
+                          message: 'Please fill all required fields',
+                          type: SnackbarType.error,
+                        );
+                      }
+                    },
+                    text: 'Login',
+                  );
+                },
+              ),
+                      // Customloginbutton(
+                      //   onPressed: () {
+                      //     CustomNavigation.pushNamedWithTransition(
+                      //       context,
+                      //       AppRouter.verifyOTP,
+                      //       arguments: {
+                      //         'mobileNumber': '9946802969',
+                      //         'flatId': '969',
+                      //       },
+                      //     );
+                      //   },
+                      //   text: 'Send OTP',
+                      // ),
 
                       ResponsiveSizedBox.height30,
 

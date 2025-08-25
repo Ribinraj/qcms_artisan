@@ -233,6 +233,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
+import 'package:qcms_artisan/widgets/custom_sharedprefrences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -296,7 +297,17 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Navigate after animations
     await Future.delayed(const Duration(milliseconds: 2500));
-     CustomNavigation.pushNamedWithTransition(context, AppRouter.login);
+    checkUserlogin(context);
+  }
+
+  Future<void> checkUserlogin(context) async {
+    final String usertoken = await getUserToken();
+    if (usertoken.isEmpty) {
+      await Future.delayed(const Duration(seconds: 3));
+      CustomNavigation.pushNamedWithTransition(context, AppRouter.login);
+    } else {
+      CustomNavigation.pushNamedWithTransition(context, AppRouter.mainpage);
+    }
   }
 
   @override

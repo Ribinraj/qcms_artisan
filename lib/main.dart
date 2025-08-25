@@ -1,10 +1,23 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/domain/repositories/apprepo.dart';
+import 'package:qcms_artisan/domain/repositories/loginrepo.dart';
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/connectivity_bloc/connectivity_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_dashboard_bloc/fetch_dashboard_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_opencomplaints/fetch_opencomplaints_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_profile_bloc/fetch_profile_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_solvedcomplaints/fetch_solvedcomplaints_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/language_cubit/language_cubit.dart';
+import 'package:qcms_artisan/presentation/bloc/resend_otp_bloc/resend_otp_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/send_otp_bloc/send_otp_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +28,42 @@ void main() async {
       statusBarBrightness: Brightness.light,
     ),
   );
+  final prefs = await SharedPreferences.getInstance();
+  final langcode = prefs.getString('langCode') ?? 'en';
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const MyApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en'), Locale('hi'), Locale('kn')],
+      path: 'assets/lang',
+      fallbackLocale: const Locale('en'),
+      startLocale: Locale(langcode),
+
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => ConnectivityBloc()),
+          BlocProvider(create: (context) => BottomNavigationBloc()),
+          BlocProvider(create: (context) => LanguageCubit()),
+          BlocProvider(
+            create: (context) => SendOtpBloc(repository: LoginRepo()),
+          ),
+          BlocProvider(
+            create: (context) => VerifyOtpBloc(repository: LoginRepo()),
+          ),
+          BlocProvider(
+            create: (context) => ResendOtpBloc(repository: LoginRepo()),
+          ),
+           BlocProvider(create: (context) => FetchDashboardBloc(repository:Apprepo())),
+            BlocProvider(create: (context) =>FetchProfileBloc(repository:LoginRepo())),
+             BlocProvider(create: (context) =>FetchOpencomplaintsBloc(repository:Apprepo())),
+                          BlocProvider(create: (context) =>FetchSolvedcomplaintsBloc(repository:Apprepo())),
+        ],
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,25 +73,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ResponsiveUtils().init(context);
-    return BlocProvider(
-      create: (context) => BottomNavigationBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRouter.splashpage,
-        onUnknownRoute: (settings) => MaterialPageRoute(
-          builder: (_) => Scaffold(
-            appBar: AppBar(title: const Text('404')),
-            body: const Center(child: Text('Page not found')),
-          ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: AppRouter.splashpage,
+      onUnknownRoute: (settings) => MaterialPageRoute(
+        builder: (_) => Scaffold(
+          appBar: AppBar(title: const Text('404')),
+          body: const Center(child: Text('Page not found')),
         ),
-        title: 'QCMS_Artisan',
-        theme: ThemeData(
-          fontFamily: 'Helvetica',
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          scaffoldBackgroundColor: Appcolors.kbackgroundcolor,
-        ),
+      ),
+      title: 'QCMS_Artisan',
+      theme: ThemeData(
+        fontFamily: 'Helvetica',
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        scaffoldBackgroundColor: Appcolors.kbackgroundcolor,
       ),
     );
   }

@@ -198,7 +198,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label: "Dashboard",
+              label: "Profile",
             ),
           ],
         );
