@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.qcmsArtisan</string>
+	<string>com.crisant.artisan</string>
 	<key>PROJECT_ID</key>
 	<string>qcomplaints-39612</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:314216449206:ios:f0a52803332879bda21217</string>
+	<string>1:314216449206:ios:28017eab614513b7a21217</string>
 </dict>
 </plist>

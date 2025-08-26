@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBkJjM7D9CTe8F97ZrWC9dGxy7nfSyHOBE',
-    appId: '1:314216449206:android:54c49001c6144598a21217',
+    appId: '1:314216449206:android:bb3adc9d763fc092a21217',
     messagingSenderId: '314216449206',
     projectId: 'qcomplaints-39612',
     storageBucket: 'qcomplaints-39612.firebasestorage.app',
@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDygxghxCXJoPzQUMOZYYWyTC0B_bfCCSY',
-    appId: '1:314216449206:ios:f0a52803332879bda21217',
+    appId: '1:314216449206:ios:28017eab614513b7a21217',
     messagingSenderId: '314216449206',
     projectId: 'qcomplaints-39612',
     storageBucket: 'qcomplaints-39612.firebasestorage.app',
-    iosBundleId: 'com.example.qcmsArtisan',
+    iosBundleId: 'com.crisant.artisan',
   );
 }
