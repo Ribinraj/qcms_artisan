@@ -120,7 +120,7 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
     ),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 4,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return Container(
                       height: ResponsiveUtils.hp(15),

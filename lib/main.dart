@@ -11,6 +11,7 @@ import 'package:qcms_artisan/core/responsiveutils.dart';
 import 'package:qcms_artisan/domain/controllers/notificationcontroller.dart';
 import 'package:qcms_artisan/domain/repositories/apprepo.dart';
 import 'package:qcms_artisan/domain/repositories/loginrepo.dart';
+import 'package:qcms_artisan/firebase_options.dart';
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/connectivity_bloc/connectivity_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_dashboard_bloc/fetch_dashboard_bloc.dart';
@@ -29,20 +30,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  //   await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+    await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   
-  //   final pushNotifications = PushNotifications();
-  // await pushNotifications.init();
-  // if (Platform.isIOS) {
-  //   await FirebaseMessaging.instance.requestPermission(
-  //     alert: true,
-  //     badge: true,
-  //     sound: true,
-  //     provisional: false,
-  //   );
-  // }
+    final pushNotifications = PushNotifications();
+  await pushNotifications.init();
+  if (Platform.isIOS) {
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional: false,
+    );
+  }
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
