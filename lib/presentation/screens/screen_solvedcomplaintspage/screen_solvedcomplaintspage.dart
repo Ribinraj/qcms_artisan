@@ -6,13 +6,15 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
-import 'package:qcms_artisan/presentation/bloc/fetch_opencomplaints/fetch_opencomplaints_bloc.dart';
+
 import 'package:qcms_artisan/presentation/bloc/fetch_solvedcomplaints/fetch_solvedcomplaints_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
 
 import 'package:qcms_artisan/widgets/custom_routes.dart';
 
 class ScreenSolvedcomplaintspage extends StatefulWidget {
+  
+  
   const ScreenSolvedcomplaintspage({super.key});
 
   @override
@@ -62,7 +64,7 @@ class _ScreenComplaintsPageState extends State<ScreenSolvedcomplaintspage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Competed Complaints'),
+      appBar: CustomAppBar(title:  "completed_completedcomplaints".tr()),
       body: Column(
         children: [
           // Search Bar Section

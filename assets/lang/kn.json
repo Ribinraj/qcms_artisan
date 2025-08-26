@@ -1,3 +1,26 @@
 {
-    "dashboard title": "ಡ್ಯಾಶ್ ಬೋರ್ಡ್"
+  "dashboard_title": "ಡ್ಯಾಶ್ ಬೋರ್ಡ್",
+  "dashboard_indianrailway": "ಭಾರತೀಯ ರೈಲ್ವೆ",
+  "dashboard_qcmsforartisan": "ವಸತಿಗೃಹಗಳ ದೂರು ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆ",
+  "dashboard_developedby": "ವಿನ್ಯಾಸ ಮತ್ತು ನಿರ್ಮಾಣ: ಕ್ರೈಸೆಂಟ್ ಟೆಕ್ನಾಲಜೀಸ್",
+  "dashboard_complaintsoverview": "ದೂರಿನ ಅವಲೋಕನ",
+  "dashboard_opencomplaints": "ಬಗೆಹರಿಸಬೇಕಾದ ದೂರುಗಳು",
+  "dashboard_solvedcomplaints": "ಬಗೆಹರಿಸಿದ ದೂರುಗಳು",
+  
+  "bottombar_dashboard": "ಡ್ಯಾಶ್ ಬೋರ್ಡ್",
+  "bottombar_complaints": "ದೂರುಗಳು",
+  "bottombar_completed": "ಪೂರ್ಣಗೊಂಡವು",
+  "bottombar_profile": "ವ್ಯಕ್ತಿಚಿತ್ರ",
+  
+  "complaints_opencomplaints": "ಬಗೆಹರಿಸಬೇಕಾದ ದೂರುಗಳು",
+  "complaint_detals": "ದೂರಿನ ವಿವರ",
+  "completed_completedcomplaints": "ಪೂರ್ಣಗೊಂಡ ದೂರುಗಳು",
+  
+  "profile_profile": "ನನ್ನ ವ್ಯಕ್ತಿಚಿತ್ರ",
+  "profile_general": "ಸಾಮಾನ್ಯ",
+  "profile_language": "ಭಾಷೆ",
+  "profile_chooseyourlanguage": "ನಿಮ್ಮ ಆದ್ಯತೆಯ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "profile_account": "ಖಾತೆ",
+  "profile_logout": "ನಿರ್ಗಮನ",
+   "notification_title":"ಸೂಚನೆಗಳು"
 }

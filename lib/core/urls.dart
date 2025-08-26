@@ -7,4 +7,7 @@ class Endpoints {
   static const fetchprofile = 'artisans/login/profile';
   static const fetchopnecomplaints = 'artisans/login/opencomplaints';
   static const fetchsolvedcomplaints = 'artisans/login/opencomplaints';
+  static const settoken = 'artisans/login/settoken';
+  static const notification = 'artisans/login/notifications';
+  static const requestotp = 'artisans/login/requestotp';
 }

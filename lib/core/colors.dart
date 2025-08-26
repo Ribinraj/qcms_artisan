@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class Appcolors {
   static const kprimaryColor = Color.fromARGB(255, 12, 58, 45);
-  static const kTertiaryColor = Color.fromARGB(255, 187, 138, 82);
+   static const kTertiaryColor = Color(0xFFFFCC0A);
+
+  // static const kTertiaryColor = Color.fromARGB(255, 187, 138, 82);
   static const kYellowColor = Color.fromARGB(255, 255, 185, 2);
   static const ksecondaryColor = Color.fromARGB(255, 109, 151, 115);
   static const kprimarytextColor = Color.fromARGB(255, 22, 97, 76);

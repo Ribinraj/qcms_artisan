@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:qcms_artisan/core/urls.dart';
 import 'package:qcms_artisan/data/complaint_model.dart';
 import 'package:qcms_artisan/data/dashboard_model.dart';
+import 'package:qcms_artisan/data/notification_model.dart';
 import 'package:qcms_artisan/widgets/custom_sharedprefrences.dart';
 
 class ApiResponse<T> {
@@ -164,82 +165,82 @@ class Apprepo {
     }
   }
   //////////////cancel complaint/////////////
-  // Future<ApiResponse> cancelcomplaint({required String complaintId}) async {
-  //   try {
-  //     final token = await getUserToken();
-  //     Response response =
-  //         await dio.post(Endpoints.cancelcomplaint, data: {"complaintId":complaintId},options:Options(headers: {'Authorization': token}));
+  Future<ApiResponse> requestotp({required String complaintId}) async {
+    try {
+      final token = await getUserToken();
+      Response response =
+          await dio.post(Endpoints.requestotp, data: {"complaintId":complaintId},options:Options(headers: {'Authorization': token}));
 
-  //     final responseData = response.data;
-  //     if (!responseData["error"] && responseData["status"] == 200) {
-  //       return ApiResponse(
-  //         data: null,
-  //         message: responseData['message'] ?? 'Success',
-  //         error: false,
-  //         status: responseData["status"],
-  //       );
-  //     } else {
-  //       return ApiResponse(
-  //         data: null,
-  //         message: responseData['message'] ?? 'Something went wrong',
-  //         error: true,
-  //         status: responseData["status"],
-  //       );
-  //     }
-  //   } on DioException catch (e) {
-  //     debugPrint(e.message);
-  //     log(e.toString());
-  //     return ApiResponse(
-  //       data: null,
-  //       message: 'Network or server error occurred',
-  //       error: true,
-  //       status: 500,
-  //     );
-  //   }
-  // }
+      final responseData = response.data;
+      if (!responseData["error"] && responseData["status"] == 200) {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
   ////////////////notifications////////////////////
-  //   Future<ApiResponse<List<NotificationModel>>> fetchnotifications() async {
-  //   try {
-  //     final token = await getUserToken();
+    Future<ApiResponse<List<NotificationModel>>> fetchnotifications() async {
+    try {
+      final token = await getUserToken();
 
-  //     log(token.toString());
-  //     Response response = await dio.get(
-  //       Endpoints.notifications,
-  //       options: Options(headers: {'Authorization': token}),
-  //     );
+      log(token.toString());
+      Response response = await dio.get(
+        Endpoints.notification,
+        options: Options(headers: {'Authorization': token}),
+      );
 
-  //     final responseData = response.data;
-  //     log('message:${responseData["status"].toString()}');
-  //     if (!responseData["error"] && responseData["status"] == 200) {
-  //       log(responseData['status'].toString());
-  //       final List<dynamic> notificationlist = responseData['data'];
-  //       List<NotificationModel> notification = notificationlist
-  //           .map((notification) => NotificationModel.fromJson(notification))
-  //           .toList();
-  //       return ApiResponse(
-  //         data: notification,
-  //         message: responseData['message'] ?? 'Success',
-  //         error: false,
-  //         status: responseData["status"],
-  //       );
-  //     } else {
-  //       return ApiResponse(
-  //         data: null,
-  //         message: responseData['message'] ?? 'Something went wrong',
-  //         error: true,
-  //         status: responseData["status"],
-  //       );
-  //     }
-  //   } on DioException catch (e) {
-  //     debugPrint(e.message);
-  //     log(e.toString());
-  //     return ApiResponse(
-  //       data: null,
-  //       message: 'Network or server error occurred',
-  //       error: true,
-  //       status: 500,
-  //     );
-  //   }
-  // }
+      final responseData = response.data;
+      log('message:${responseData["status"].toString()}');
+      if (!responseData["error"] && responseData["status"] == 200) {
+        log(responseData['status'].toString());
+        final List<dynamic> notificationlist = responseData['data'];
+        List<NotificationModel> notification = notificationlist
+            .map((notification) => NotificationModel.fromJson(notification))
+            .toList();
+        return ApiResponse(
+          data: notification,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
 
 }

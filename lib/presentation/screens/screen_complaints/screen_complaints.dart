@@ -60,7 +60,7 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Open Complaints'),
+      appBar:  CustomAppBar(title: "complaints_opencomplaints".tr()),
       body: Column(
         children: [
           // Search Bar Section

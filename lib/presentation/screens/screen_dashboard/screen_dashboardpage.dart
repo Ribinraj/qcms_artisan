@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_dashboard_bloc/fetch_dashboard_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
-import 'package:qcms_artisan/widgets/custom_networkimage.dart';
 
 class ScreenDashboardpage extends StatefulWidget {
   const ScreenDashboardpage({super.key});
@@ -28,7 +28,7 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "dashboard title".tr()),
+      appBar: CustomAppBar(title: "dashboard_title".tr()),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: AnimationLimiter(
@@ -51,7 +51,7 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Indian Railways",
+                             "dashboard_indianrailway".tr(),
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                             ),
                             ResponsiveSizedBox.height10,
                             Text(
-                              "QCMS for Artisans",
+                               "dashboard_qcmsforartisan".tr(),
                               style: TextStyle(
                                 fontSize: 15,
                                 color: const Color.fromARGB(255, 255, 255, 255),
@@ -70,10 +70,10 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                             ),
                             ResponsiveSizedBox.height5,
                             Text(
-                              "Designed & Developed by Crisant Tecchnologies",
+                              "dashboard_developedby".tr(),
                               style: TextStyle(
                                 fontSize: 11,
-                                color: const Color.fromARGB(255, 231, 142, 40),
+                                color: Appcolors.kTertiaryColor,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -87,27 +87,45 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
 
               ResponsiveSizedBox.height20,
 
-              // Image Section with animation
               AnimationConfiguration.staggeredList(
-                position: 1, // keep position in sequence
+                position: 1,
                 duration: const Duration(milliseconds: 600),
                 child: SlideAnimation(
                   verticalOffset: 30.0,
                   child: FadeInAnimation(
                     child: ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(12),
-                      child: Image.asset(
-                        "assets/images/6405833_25693.jpg", // replace with your asset path
+                      borderRadius: BorderRadius.circular(12),
+                      child: Lottie.asset(
+                        "assets/images/tools animation(1).json",
                         height: ResponsiveUtils.hp(34),
                         width: ResponsiveUtils.screenWidth,
-                        fit: BoxFit
-                            .cover, // keeps aspect ratio inside given size
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
                 ),
               ),
 
+              // // Image Section with animation
+              // AnimationConfiguration.staggeredList(
+              //   position: 1, // keep position in sequence
+              //   duration: const Duration(milliseconds: 600),
+              //   child: SlideAnimation(
+              //     verticalOffset: 30.0,
+              //     child: FadeInAnimation(
+              //       child: ClipRRect(
+              //         borderRadius: BorderRadiusGeometry.circular(12),
+              //         child: Image.asset(
+              //           "assets/images/6405833_25693.jpg", // replace with your asset path
+              //           height: ResponsiveUtils.hp(34),
+              //           width: ResponsiveUtils.screenWidth,
+              //           fit: BoxFit
+              //               .cover, // keeps aspect ratio inside given size
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               ResponsiveSizedBox.height20,
               AnimationConfiguration.staggeredList(
                 position: 1,
@@ -131,7 +149,7 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              "Complaints Overview",
+                               "dashboard_complaintsoverview".tr(),
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -193,13 +211,13 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
                               return Row(
                                 children: [
                                   _buildStatCard(
-                                    title: 'Open Complaints',
+                                    title:  "dashboard_opencomplaints".tr(),
                                     value: state.dashboard.openComplaints,
                                     color: Appcolors.kprimaryColor,
                                   ),
                                   Spacer(),
                                   _buildStatCard(
-                                    title: 'Solved Complaints',
+                                    title:    "dashboard_solvedcomplaints".tr(),
                                     value: state.dashboard.completedComplaints,
                                     color: Appcolors.kprimaryColor,
                                   ),
@@ -258,7 +276,7 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
               title,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 color: Appcolors.kwhitecolor,
                 fontWeight: FontWeight.bold,
               ),
@@ -297,7 +315,7 @@ class HeaderPainter extends CustomPainter {
 
     // Add subtle decoration
     final decorPaint = Paint()
-      ..color = Appcolors.kwhitecolor.withOpacity(0.2)
+      ..color = Appcolors.kwhitecolor.withOpacity(0.06)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(

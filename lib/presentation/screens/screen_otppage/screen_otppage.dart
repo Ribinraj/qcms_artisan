@@ -9,6 +9,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/domain/controllers/notificationcontroller.dart';
 import 'package:qcms_artisan/presentation/bloc/resend_otp_bloc/resend_otp_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/verify_otp_bloc/verify_otp_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
@@ -245,9 +246,9 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
     return BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
       listener: (context, state) async {
         if (state is VerifyOtpSuccessState) {
-          //  final pushNotifications = PushNotifications.instance;
-          //  await pushNotifications.init();
-          // await PushNotifications().sendTokenToServer();
+           final pushNotifications = PushNotifications.instance;
+           await pushNotifications.init();
+          await PushNotifications().sendTokenToServer();
           CustomNavigation.pushReplacementNamedWithTransition(
             context,
             AppRouter.mainpage,

@@ -11,6 +11,7 @@ import 'package:qcms_artisan/widgets/custom_routes.dart';
 import 'package:qcms_artisan/widgets/custom_snackbar.dart';
 import 'package:qcms_artisan/widgets/custom_textfield.dart';
 import 'package:qcms_artisan/widgets/customloginbutton.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ScreenLoginpage extends StatefulWidget {
   const ScreenLoginpage({super.key});
@@ -111,61 +112,62 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                         ],
                         prefixIcon: const Icon(
                           Icons.phone_android,
-                          color: Appcolors.kTertiaryColor,
+                          color: Color.fromARGB(255, 120, 117, 105),
                         ),
                         validator: _validateMobile,
                       ),
 
                       ResponsiveSizedBox.height30,
-                          BlocConsumer<SendOtpBloc, SendOtpState>(
-                listener: (context, state) {
-                  if (state is SendOtpSuccess) {
-                    CustomSnackbar.show(
-                      context,
-                      message:
-                          "OTP has been sent on your Mobile Number ${mobileController.text}.",
-                      type: SnackbarType.success,
-                    );
-                    CustomNavigation.pushReplacementNamedWithTransition(
-                      context,
-                      AppRouter.verifyOTP,
-                      arguments: {
-                        'mobileNumber':mobileController.text,
-                        'artisanId': state.artisanId,
-                      },
-                    );
-                  } else if (state is SendOtpFailure) {
-                    CustomSnackbar.show(
-                      context,
-                      message: state.error,
-                      type: SnackbarType.error,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is SendOtpLoadingState) {
-                    return Customloginloadingbutton();
-                  }
-                  return Customloginbutton(
-                    onPressed: () {
-                      if (_formkey.currentState!.validate()) {
-                        context.read<SendOtpBloc>().add(
-                          SendOtpButtonClickEvent(
-                            mobileNumber:mobileController.text,
-                          ),
-                        );
-                      } else {
-                        CustomSnackbar.show(
-                          context,
-                          message: 'Please fill all required fields',
-                          type: SnackbarType.error,
-                        );
-                      }
-                    },
-                    text: 'Login',
-                  );
-                },
-              ),
+                      BlocConsumer<SendOtpBloc, SendOtpState>(
+                        listener: (context, state) {
+                          if (state is SendOtpSuccess) {
+                            CustomSnackbar.show(
+                              context,
+                              message:
+                                  "OTP has been sent on your Mobile Number ${mobileController.text}.",
+                              type: SnackbarType.success,
+                            );
+                            CustomNavigation.pushReplacementNamedWithTransition(
+                              context,
+                              AppRouter.verifyOTP,
+                              arguments: {
+                                'mobileNumber': mobileController.text,
+                                'artisanId': state.artisanId,
+                              },
+                            );
+                          } else if (state is SendOtpFailure) {
+                            CustomSnackbar.show(
+                              context,
+                              message: state.error,
+                              type: SnackbarType.error,
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is SendOtpLoadingState) {
+                            return Customloginloadingbutton();
+                          }
+                          return Customloginbutton(
+                            onPressed: () {
+                              if (_formkey.currentState!.validate()) {
+                                context.read<SendOtpBloc>().add(
+                                  SendOtpButtonClickEvent(
+                                    mobileNumber: mobileController.text,
+                                  ),
+                                );
+                              } else {
+                                CustomSnackbar.show(
+                                  context,
+                                  message: 'Please fill all required fields',
+                                  type: SnackbarType.error,
+                                );
+                              }
+                            },
+                            text: 'Login',
+                          );
+                        },
+                      ),
+
                       // Customloginbutton(
                       //   onPressed: () {
                       //     CustomNavigation.pushNamedWithTransition(
@@ -179,7 +181,6 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       //   },
                       //   text: 'Send OTP',
                       // ),
-
                       ResponsiveSizedBox.height30,
 
                       Container(
@@ -203,15 +204,17 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             TextButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                _launchPrivacyPolicy();
+                              },
                               icon: Icon(
                                 Icons.privacy_tip_outlined,
                                 size: 16,
-                                color: Appcolors.kTertiaryColor,
+                                color: const Color.fromARGB(255, 120, 117, 105),
                               ),
                               label: TextStyles.body(
                                 text: 'Privacy Policy',
-                                color: Appcolors.kTertiaryColor,
+                                color: const Color.fromARGB(255, 120, 117, 105),
                               ),
                             ),
                             Container(
@@ -220,15 +223,20 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                               color: Appcolors.kprimaryColor.withOpacity(.4),
                             ),
                             TextButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                CustomNavigation.pushNamedWithTransition(
+                                  context,
+                                  AppRouter.disclaimer,
+                                );
+                              },
                               icon: Icon(
                                 Icons.info_outline,
                                 size: 16,
-                                color: Appcolors.kTertiaryColor,
+                                color: const Color.fromARGB(255, 120, 117, 105),
                               ),
                               label: TextStyles.body(
                                 text: 'Disclaimer',
-                                color: Appcolors.kTertiaryColor,
+                                color: const Color.fromARGB(255, 120, 117, 105),
                               ),
                             ),
                           ],
@@ -258,5 +266,12 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
     }
 
     return null;
+  }
+
+  Future<void> _launchPrivacyPolicy() async {
+    final Uri url = Uri.parse('https://qcomplaints.com/privacy-policy');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

@@ -71,6 +71,7 @@
 //     );
 //   }
 // }
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,7 +93,7 @@ class BottomNavigationWidget extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           backgroundColor: Appcolors.kprimarytextColor,
           selectedItemColor: Appcolors.kwhitecolor,
-          unselectedItemColor: const Color.fromARGB(255, 245, 146, 113),
+          unselectedItemColor: Appcolors.kTertiaryColor,
           selectedLabelStyle: const TextStyle(fontSize: 10),
           unselectedLabelStyle: const TextStyle(fontSize: 10),
           items: [
@@ -110,17 +111,12 @@ class BottomNavigationWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 3),
                 child: Image.asset(
                   'assets/images/remove_13962958.png',
-                  color: const Color.fromARGB(
-                    255,
-                    245,
-                    146,
-                    113,
-                  ), // inactive color
+                  color: Appcolors.kTertiaryColor, // inactive color
                   width: ResponsiveUtils.wp(6),
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label: "Dashboard",
+              label:  "bottombar_dashboard".tr(),
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(
@@ -136,17 +132,12 @@ class BottomNavigationWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 3),
                 child: Image.asset(
                   'assets/images/exam_3074131.png',
-                  color: const Color.fromARGB(
-                    255,
-                    245,
-                    146,
-                    113,
-                  ), // inactive color
+                  color: Appcolors.kTertiaryColor, // inactive color
                   width: ResponsiveUtils.wp(6),
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label: "Complaints",
+              label:"bottombar_complaints".tr(),
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(
@@ -162,17 +153,12 @@ class BottomNavigationWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 3),
                 child: Image.asset(
                   'assets/images/solution_10161169.png',
-                  color: const Color.fromARGB(
-                    255,
-                    245,
-                    146,
-                    113,
-                  ), // inactive color
+                  color: Appcolors.kTertiaryColor, // inactive color
                   width: ResponsiveUtils.wp(6),
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label: "Completed",
+              label: "bottombar_completed".tr(),
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(
@@ -188,17 +174,12 @@ class BottomNavigationWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 3),
                 child: Image.asset(
                   'assets/images/people_13916215.png',
-                  color: const Color.fromARGB(
-                    255,
-                    245,
-                    146,
-                    113,
-                  ), // inactive color
+                  color: Appcolors.kTertiaryColor, // inactive color
                   width: ResponsiveUtils.wp(6),
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label: "Profile",
+              label:   "bottombar_profile".tr(),
             ),
           ],
         );

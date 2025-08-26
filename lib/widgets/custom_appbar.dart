@@ -4,6 +4,7 @@ import 'package:qcms_artisan/core/appconstants.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/widgets/custom_routes.dart';
 
 // Custom AppBar Component that can be reused
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -71,7 +72,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               // Notification Icon
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  CustomNavigation.pushNamedWithTransition(
+                    context,
+                    AppRouter.notification,
+                  );
+                },
                 child: Icon(
                   Icons.notifications_outlined,
                   color: iconColor,

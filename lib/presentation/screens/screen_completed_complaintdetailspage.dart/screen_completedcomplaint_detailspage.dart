@@ -1,14 +1,20 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/data/complaint_model.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
 import 'package:qcms_artisan/widgets/custom_networkimage.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
 
 class ScreenCompletedcomplaintDetailspage extends StatefulWidget {
-  const ScreenCompletedcomplaintDetailspage({super.key});
+  final ComplaintModel complaint;
+  const ScreenCompletedcomplaintDetailspage({
+    super.key,
+    required this.complaint,
+  });
 
   @override
   State<ScreenCompletedcomplaintDetailspage> createState() =>
@@ -17,18 +23,10 @@ class ScreenCompletedcomplaintDetailspage extends StatefulWidget {
 
 class _ScreenComplaintdetailsPageState
     extends State<ScreenCompletedcomplaintDetailspage> {
-  // String _formatDateTime(String? dateTimeString) {
-  //   if (dateTimeString == null || dateTimeString.isEmpty) return 'N/A';
-  //   final DateTime dateTime = DateTime.parse(dateTimeString);
-  //   final DateFormat dateFormat = DateFormat('MMM dd, yyyy');
-  //   final DateFormat timeFormat = DateFormat('hh:mm a');
-  //   return '${dateFormat.format(dateTime)} at ${timeFormat.format(dateTime)}';
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Complaint Details"),
+      appBar: CustomAppBar(title:  "complaint_detals".tr()),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -38,11 +36,12 @@ class _ScreenComplaintdetailsPageState
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: TextStyles.subheadline(text: 'Complaint #56677'),
+              child: TextStyles.subheadline(
+                text: 'Complaint #${widget.complaint.complaintId}',
+              ),
             ),
             ImageWithFallback(
-              imageUrl:
-                  'https://media.istockphoto.com/id/184962061/photo/business-towers.jpg?s=612x612&w=0&k=20&c=gLQLQ9lnfW6OnJVe39r516vbZYupOoEPl7P_22Un6EM=',
+              imageUrl: widget.complaint.imageAddress,
               height: ResponsiveUtils.hp(30),
               width: ResponsiveUtils.screenWidth,
             ),
@@ -52,23 +51,35 @@ class _ScreenComplaintdetailsPageState
               color: const Color.fromARGB(255, 255, 255, 255),
               child: Column(
                 children: [
-                  _buildDetailRow('Department', '4353454'),
+                  _buildDetailRow('Department', widget.complaint.departmentId),
                   _buildDivider(),
-                  _buildDetailRow('Category', 'category'),
+                  _buildDetailRow('Category', widget.complaint.categoryId),
                   _buildDivider(),
-                  _buildDetailRow('Division', 'Mysore'),
+                  _buildDetailRow('City', widget.complaint.cityId),
                   _buildDivider(),
-                  _buildDetailRow('Quarters', 'mysore'),
+                  _buildDetailRow('Quarters', widget.complaint.quarterId),
                   _buildDivider(),
-                  _buildDetailRow('Flat#', '4566'),
+                  _buildDetailRow('Flat#', widget.complaint.flatId),
                   _buildDivider(),
+                  // _buildDetailRow(
+                  //   'Complaint Remarks',
+                  //   widget.complaint.complaintRemarks,
+                  //   showEmpty: true,
+                  // ),
+                  // _buildDivider(),
                   _buildDetailRow(
-                    'Complaint Remarks',
-                    'Nothing..',
-                    showEmpty: true,
+                    'Complaint Date',
+                    DateFormat(
+                      'd MMM yyyy',
+                    ).format(DateTime.parse(widget.complaint.complaintDate)),
                   ),
                   _buildDivider(),
-                  _buildDetailRow('Complaint Date', '40-04-2025'),
+                  _buildDetailRow(
+                    'Artisan visit Date',
+                    DateFormat(
+                      'd MMM yyyy',
+                    ).format(DateTime.parse(widget.complaint.complaintDate)),
+                  ),
                   _buildDivider(),
                 ],
               ),
@@ -79,7 +90,7 @@ class _ScreenComplaintdetailsPageState
                 CustomNavigation.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolors.kTertiaryColor,
+                backgroundColor: Appcolors.kprimaryColor,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,

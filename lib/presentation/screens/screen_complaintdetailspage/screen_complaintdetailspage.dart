@@ -1,14 +1,21 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/data/complaint_model.dart';
+import 'package:qcms_artisan/presentation/bloc/request_otp_bloc/request_otp_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
 import 'package:qcms_artisan/widgets/custom_networkimage.dart';
 import 'package:qcms_artisan/widgets/custom_routes.dart';
+import 'package:qcms_artisan/widgets/custom_snackbar.dart';
 
 class ScreenComplaintdetailsPage extends StatefulWidget {
-  const ScreenComplaintdetailsPage({super.key});
+  final ComplaintModel complaint;
+  const ScreenComplaintdetailsPage({super.key, required this.complaint});
 
   @override
   State<ScreenComplaintdetailsPage> createState() =>
@@ -17,18 +24,12 @@ class ScreenComplaintdetailsPage extends StatefulWidget {
 
 class _ScreenComplaintdetailsPageState
     extends State<ScreenComplaintdetailsPage> {
-  // String _formatDateTime(String? dateTimeString) {
-  //   if (dateTimeString == null || dateTimeString.isEmpty) return 'N/A';
-  //   final DateTime dateTime = DateTime.parse(dateTimeString);
-  //   final DateFormat dateFormat = DateFormat('MMM dd, yyyy');
-  //   final DateFormat timeFormat = DateFormat('hh:mm a');
-  //   return '${dateFormat.format(dateTime)} at ${timeFormat.format(dateTime)}';
-  // }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Complaint Details"),
+      appBar: CustomAppBar(title: "complaint_detals".tr()),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -38,11 +39,12 @@ class _ScreenComplaintdetailsPageState
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: TextStyles.subheadline(text: 'Complaint #56677'),
+              child: TextStyles.subheadline(
+                text: 'Complaint #${widget.complaint.complaintId}',
+              ),
             ),
             ImageWithFallback(
-              imageUrl:
-                  'https://media.istockphoto.com/id/184962061/photo/business-towers.jpg?s=612x612&w=0&k=20&c=gLQLQ9lnfW6OnJVe39r516vbZYupOoEPl7P_22Un6EM=',
+              imageUrl: widget.complaint.imageAddress,
               height: ResponsiveUtils.hp(30),
               width: ResponsiveUtils.screenWidth,
             ),
@@ -52,23 +54,35 @@ class _ScreenComplaintdetailsPageState
               color: const Color.fromARGB(255, 255, 255, 255),
               child: Column(
                 children: [
-                  _buildDetailRow('Department', '4353454'),
+                  _buildDetailRow('Department', widget.complaint.departmentId),
                   _buildDivider(),
-                  _buildDetailRow('Category', 'category'),
+                  _buildDetailRow('Category', widget.complaint.categoryId),
                   _buildDivider(),
-                  _buildDetailRow('Division', 'Mysore'),
+                  _buildDetailRow('City', widget.complaint.cityId),
                   _buildDivider(),
-                  _buildDetailRow('Quarters', 'mysore'),
+                  _buildDetailRow('Quarters', widget.complaint.quarterId),
                   _buildDivider(),
-                  _buildDetailRow('Flat#', '4566'),
+                  _buildDetailRow('Flat#', widget.complaint.flatId),
+                  // _buildDivider(),
+                  // _buildDetailRow(
+                  //   'Complaint Remarks',
+                  //   widget.complaint.remarks,
+                  //   showEmpty: true,
+                  // ),
                   _buildDivider(),
                   _buildDetailRow(
-                    'Complaint Remarks',
-                    'Nothing..',
-                    showEmpty: true,
+                    'Complaint Date',
+                    DateFormat(
+                      'd MMM yyyy',
+                    ).format(DateTime.parse(widget.complaint.complaintDate)),
                   ),
                   _buildDivider(),
-                  _buildDetailRow('Complaint Date', '40-04-2025'),
+                  _buildDetailRow(
+                    'Artisan visit Date',
+                    DateFormat('d MMM yyyy').format(
+                      DateTime.parse(widget.complaint.artisansVisitDate),
+                    ),
+                  ),
                   _buildDivider(),
                 ],
               ),
@@ -81,7 +95,7 @@ class _ScreenComplaintdetailsPageState
                     CustomNavigation.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Appcolors.kTertiaryColor,
+                    backgroundColor: Appcolors.kprimaryColor,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
@@ -108,102 +122,149 @@ class _ScreenComplaintdetailsPageState
                 ),
                 ResponsiveSizedBox.width30,
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              206,
-                              234,
-                              210,
+                  child: BlocConsumer<RequestOtpBloc, RequestOtpState>(
+                    listener: (context, state) {
+                      if (state is RequestOTPSuccessState) {
+                        CustomSnackbar.show(
+                          context,
+                          message: state.message,
+                          type: SnackbarType.success,
+                        );
+                      } else if (state is RequestOTPErrorState) {
+                        CustomSnackbar.show(
+                          context,
+                          message: state.message,
+                          type: SnackbarType.error,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is RequestOTPLoadingState) {
+                        return OutlinedButton(
+                          onPressed: () {},
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Appcolors.kprimarytextColor,
+
+                            side: const BorderSide(
+                              color: Appcolors.kprimarytextColor,
                             ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              side: BorderSide(
-                                color: Appcolors.ksecondaryColor,
-                                width: 1.5,
-                              ),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            title: Row(
-                              children: [
-                                Icon(
-                                  Icons.warning_amber_rounded,
-                                  size: ResponsiveUtils.wp(3),
-                                  color: Appcolors.kprimaryColor,
+                          ),
+                          child: SpinKitWave(
+                            size: 15,
+                            color: Appcolors.ksecondaryColor,
+                          ),
+                        );
+                      }
+                      return OutlinedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Appcolors.kwhitecolor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  side: BorderSide(
+                                    color: Appcolors.ksecondaryColor,
+                                    width: 1.5,
+                                  ),
                                 ),
-                                ResponsiveSizedBox.width20,
-                                Text(
-                                  "complaintdetails cancelcomplaint",
+                                title: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.warning_amber_rounded,
+                                      size: ResponsiveUtils.wp(5),
+                                      color: Appcolors.kprimaryColor,
+                                    ),
+                                    ResponsiveSizedBox.width20,
+                                    Text(
+                                      "Sent OTP Request",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: ResponsiveUtils.wp(5),
+                                        color: Appcolors.kprimaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                content: const Text(
+                                  'Are you sure you want to send OTP request this complaint?',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: ResponsiveUtils.wp(3),
-                                    color: Appcolors.kprimaryColor,
+                                    fontSize: 15,
+                                    color: Appcolors.kblackcolor,
                                   ),
                                 ),
-                              ],
-                            ),
-                            content: const Text(
-                              'Are you sure you want to cancel this complaint?',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Appcolors.kblackcolor,
-                              ),
-                            ),
-                            actionsPadding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            actions: [
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Appcolors.kblackcolor,
+                                actionsPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
                                 ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('No'),
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Appcolors.kredcolor,
-                                  foregroundColor: Appcolors.kwhitecolor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                actions: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Appcolors.kblackcolor,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('No'),
                                   ),
-                                ),
-                                onPressed: () {},
-                                child: const Text('Yes'),
-                              ),
-                            ],
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Appcolors.kprimaryColor,
+                                      foregroundColor: Appcolors.kwhitecolor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      context.read<RequestOtpBloc>().add(
+                                        RequestOTPbuttonClickEvent(
+                                          complaintId:
+                                              widget.complaint.complaintId,
+                                        ),
+                                      );
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      'Yes',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Appcolors.ksecondaryColor,
-                      side: const BorderSide(color: Appcolors.ksecondaryColor),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.cancel_outlined, size: 20),
-                        SizedBox(width: 8),
-                        Text(
-                          'Request OTP',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Appcolors.ksecondaryColor,
+                          side: const BorderSide(
+                            color: Appcolors.ksecondaryColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                      ],
-                    ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.cancel_outlined, size: 20),
+                            SizedBox(width: 8),
+                            Text(
+                              'Request OTP',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

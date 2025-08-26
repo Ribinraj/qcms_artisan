@@ -81,7 +81,7 @@ class NoNetworkOverlay extends StatelessWidget {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                      'assets/images/13766137_5356680.jpg',
+                      'assets/images/1fece6af-393f-40e8-95fe-5819ce7c00a7.jpg',
                     ),
                     fit: BoxFit.cover,
                   ),

@@ -211,26 +211,26 @@ class LoginRepo {
     }
 
   // //   ///////////////update token/////////////////
-  // Future<void> updatetoken({required String token}) async {
-  //   try {
-  //     final userToken = await getUserToken();
+  Future<void> updatetoken({required String token}) async {
+    try {
+      final userToken = await getUserToken();
 
-  //     Response response = await dio.post(
-  //       Endpoints.settoken,
-  //       options: Options(headers: {'Authorization': userToken}),
-  //       data: { "pushToken": token}
-  //     );
+      Response response = await dio.post(
+        Endpoints.settoken,
+        options: Options(headers: {'Authorization': userToken}),
+        data: { "pushToken": token}
+      );
 
-  //     final responseData = response.data;
-  //     if (!responseData["error"] && responseData["status"] == 200) {
-  //       log("FCM token updated successfully");
-  //     } else {
-  //       log("Failed to update FCM token: ${responseData["message"]}");
-  //     }
-  //   } catch (e) {
-  //     log("Error updating FCM token: $e");
-  //   }
-  // }
+      final responseData = response.data;
+      if (!responseData["error"] && responseData["status"] == 200) {
+        log("FCM token updated successfully");
+      } else {
+        log("Failed to update FCM token: ${responseData["message"]}");
+      }
+    } catch (e) {
+      log("Error updating FCM token: $e");
+    }
+  }
 
   void dispose() {
     dio.close();

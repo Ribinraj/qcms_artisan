@@ -5,9 +5,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
+import 'package:qcms_artisan/domain/controllers/notificationcontroller.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_profile_bloc/fetch_profile_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/language_cubit/language_cubit.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
+import 'package:qcms_artisan/widgets/custom_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenProfilepage extends StatefulWidget {
   const ScreenProfilepage({super.key});
@@ -70,7 +73,7 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Profile"),
+      appBar: CustomAppBar(title:  "profile_profile".tr()),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -207,13 +210,13 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
             // Language Setting Card
             _buildSettingCard(
               icon: Icons.language,
-              title: "Language",
-              subtitle: 'Choose your preferred language',
+              title: "profile_language".tr(),
+              subtitle:   "profile_chooseyourlanguage".tr(),
               child: _buildLanguageDropdown(),
             ),
 
             ResponsiveSizedBox.height40,
-            _buildSectionTitle("Account"),
+            _buildSectionTitle( "profile_account".tr()),
             const SizedBox(height: 16),
 
             // Logout Button
@@ -248,7 +251,7 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
                     Icon(Icons.logout, size: 20),
                     const SizedBox(width: 8),
                     Text(
-                      "Logout",
+                      "profile_logout".tr(),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -515,11 +518,35 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
                 ),
               ),
               child: const Text('Logout'),
-              onPressed: () async {},
+              onPressed: () async {
+                await handleLogout(context);
+              },
             ),
           ],
         );
       },
     );
+  }
+
+  static Future<void> handleLogout(BuildContext context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Clear user token
+      await prefs.remove('USER_TOKEN');
+      await prefs.remove('FCM_TOKEN');
+      await PushNotifications().deleteDeviceToken();
+      navigateToMainPageNamed(context, 0);
+      // Normal logout - go to login page
+      if (context.mounted) {
+        CustomNavigation.pushNamedAndRemoveUntil(context, AppRouter.login);
+      }
+    } catch (e) {
+      print('Error during logout: $e');
+      // Fallback navigation
+      if (context.mounted) {
+        CustomNavigation.pushNamedAndRemoveUntil(context, AppRouter.login);
+      }
+    }
   }
 }

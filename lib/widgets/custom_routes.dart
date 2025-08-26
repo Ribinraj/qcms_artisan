@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qcms_artisan/data/complaint_model.dart';
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/presentation/screens/screen_complaintdetailspage/screen_complaintdetailspage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_completed_complaintdetailspage.dart/screen_completedcomplaint_detailspage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_disclaimerpage/screen_diclaimerpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_logipage/screen_loginpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_mainpage/screen_mainpage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_notification/screen_notificationpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_otppage/screen_otppage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_splashpage/screen_splashpage.dart';
 
@@ -45,11 +48,6 @@ class AppRouter {
           settings: settings,
         );
 
-      case complaintdetails:
-        return MaterialPageRoute(
-          builder: (_) => ScreenComplaintdetailsPage(),
-          settings: settings,
-        );
       // case register:
       //   return MaterialPageRoute(
       //     builder: (_) =>
@@ -57,11 +55,17 @@ class AppRouter {
       //     settings: settings,
       //   );
       case completedcomplaintdetails:
-        return MaterialPageRoute(
-          builder: (_) =>
-              ScreenCompletedcomplaintDetailspage(), // Replace with your actual screen
-          settings: settings,
-        );
+        final complaint = args?['complaintdetails'] as ComplaintModel?;
+        if (complaint != null) {
+          return MaterialPageRoute(
+            builder: (_) =>
+                ScreenCompletedcomplaintDetailspage(complaint: complaint),
+          );
+        }else{
+                    return _errorRoute(
+            'Missing complaintdetails parameter for Complaint Details page',
+          );
+        }
       case verifyOTP:
         final artisanId = args?['artisanId'] as String?;
         final mobileNumber = args?['mobileNumber'] as String?;
@@ -69,8 +73,10 @@ class AppRouter {
         // Option 1: Required parameters (your current approach)
         if (artisanId != null && mobileNumber != null) {
           return MaterialPageRoute(
-            builder: (_) =>
-                ScreenVerifyOtp(artisanId: artisanId, mobileNumber: mobileNumber),
+            builder: (_) => ScreenVerifyOtp(
+              artisanId: artisanId,
+              mobileNumber: mobileNumber,
+            ),
             settings: settings,
           );
         } else {
@@ -78,7 +84,17 @@ class AppRouter {
             'Missing required parameters for Verify OTP: flatId and mobileNumber',
           );
         }
-
+      case complaintdetails:
+        final complaint = args?['complaintdetails'] as ComplaintModel?;
+        if (complaint != null) {
+          return MaterialPageRoute(
+            builder: (_) => ScreenComplaintdetailsPage(complaint: complaint),
+          );
+        } else {
+          return _errorRoute(
+            'Missing complaintdetails parameter for Complaint Details page',
+          );
+        }
       // case complaintdetails:
       //   final complaint = args?['complaintdetails'] as ComplaintListmodel?;
       //   if (complaint != null) {
@@ -92,16 +108,16 @@ class AppRouter {
       //       'Missing complaintdetails parameter for Complaint Details page',
       //     );
       //   }
-      // case disclaimer:
-      //   return MaterialPageRoute(
-      //     builder: (_) => DisclaimerPage(), // Replace with your actual screen
-      //     settings: settings,
-      //   );
-      // case notification:
-      //   return MaterialPageRoute(
-      //     builder: (_) => NotificationPage(), // Replace with your actual screen
-      //     settings: settings,
-      //   );
+      case disclaimer:
+        return MaterialPageRoute(
+          builder: (_) => DisclaimerPage(), // Replace with your actual screen
+          settings: settings,
+        );
+      case notification:
+        return MaterialPageRoute(
+          builder: (_) => NotificationPage(), // Replace with your actual screen
+          settings: settings,
+        );
       default:
         return _errorRoute('Route ${settings.name} not found');
     }
