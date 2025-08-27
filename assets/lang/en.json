@@ -1,13 +1,13 @@
 {
    "dashboard_title": "Dashboard",
    "dashboard_indianrailway":"Indian Railways",
-   "dashboard_qcmsforartisan":"QCMS for Artisan",
+   "dashboard_qcmsforartisan":"QCMS for Artisans",
    "dashboard_developedby":"Designed & Developed by crisant Technologies",
    "dashboard_complaintsoverview":"Complaints Overview",
-   "dashboard_opencomplaints":"Open Complaints",
-   "dashboard_solvedcomplaints":"Solved Complaints",
+   "dashboard_opencomplaints":"Open",
+   "dashboard_solvedcomplaints":"Completed",
    "bottombar_dashboard":"Dashboard",
-   "bottombar_complaints":"Complaints",
+   "bottombar_complaints":"Open",
    "bottombar_completed":"Completed",
    "bottombar_profile":"Profile",
    "complaints_opencomplaints":"Open Complaints",
@@ -19,7 +19,13 @@
    "profile_chooseyourlanguage":"choose your prefered language",
    "profile_account":"Account",
    "profile_logout":"Logout",
-   "notification_title":"Notifications"
-   
+   "notification_title":"Notifications",
+   "details_department":"Department",
+   "details_category":"Category",
+   "details_city":"City",
+   "details_Quarters":"Quarters",
+   "details_flat":"Flat#",
+   "details_Complaintdate":"Complaint Date",
+   "details_artisanvisitdate":"Artisan Visit Date"
    
 }

@@ -121,7 +121,7 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
               decoration: const BoxDecoration(
                 color: Appcolors.kprimaryColor,
                 image: DecorationImage(
-                  image: AssetImage('assets/images/full_logo.png'),
+                  image: AssetImage('assets/images/full_logo_white.png'),
                   // Your logo asset
                   fit: BoxFit.none,
                   scale: 1.8,
@@ -138,13 +138,13 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
                 children: [
                   TextStyles.headline(
                     text: 'Verification Code',
-                    color: Appcolors.kTertiaryColor,
+                    color: Appcolors.kblackcolor,
                   ),
                   ResponsiveSizedBox.height10,
 
                   TextStyles.body(
                     text:
-                        'We have sent a verification code to ${widget.mobileNumber}',
+                        'Please enter the code sent on  ${widget.mobileNumber}',
                     weight: FontWeight.w600,
                   ),
                   ResponsiveSizedBox.height20,
@@ -246,17 +246,17 @@ class _ScreenVerifyOtpState extends State<ScreenVerifyOtp> {
     return BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
       listener: (context, state) async {
         if (state is VerifyOtpSuccessState) {
-        CustomNavigation.pushReplacementNamedWithTransition(
-    context,
-    AppRouter.mainpage,
-  );
+          CustomNavigation.pushReplacementNamedWithTransition(
+            context,
+            AppRouter.mainpage,
+          );
 
-  // run async stuff in background (don’t await)
-  Future.microtask(() async {
-    final pushNotifications = PushNotifications.instance;
-    await pushNotifications.init();
-    await PushNotifications().sendTokenToServer();
-  });
+          // run async stuff in background (don’t await)
+          Future.microtask(() async {
+            final pushNotifications = PushNotifications.instance;
+            await pushNotifications.init();
+            await PushNotifications().sendTokenToServer();
+          });
         } else if (state is VerifyOtpErrorState) {
           CustomSnackbar.show(
             context,

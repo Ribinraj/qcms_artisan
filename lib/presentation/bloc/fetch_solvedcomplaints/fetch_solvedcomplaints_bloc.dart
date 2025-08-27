@@ -24,7 +24,7 @@ class FetchSolvedcomplaintsBloc extends Bloc<FetchSolvedcomplaintsEvent, FetchSo
   ) async {
     emit(FetchsolvedComplaintlistsLoadingState());
     try {
-      final response = await repository.opencomplaintlists();
+      final response = await repository.solvedcomplaintlists();
       if (!response.error && response.status == 200) {
          _allComplaints = response.data!;
         emit(FetchsolvedComplaintlistSuccessState(complaints:_allComplaints));

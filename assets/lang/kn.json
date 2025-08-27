@@ -5,7 +5,7 @@
   "dashboard_developedby": "ವಿನ್ಯಾಸ ಮತ್ತು ನಿರ್ಮಾಣ: ಕ್ರೈಸೆಂಟ್ ಟೆಕ್ನಾಲಜೀಸ್",
   "dashboard_complaintsoverview": "ದೂರಿನ ಅವಲೋಕನ",
   "dashboard_opencomplaints": "ಬಗೆಹರಿಸಬೇಕಾದ ದೂರುಗಳು",
-  "dashboard_solvedcomplaints": "ಬಗೆಹರಿಸಿದ ದೂರುಗಳು",
+  "dashboard_solvedcomplaints": "ಬಗೆಹರಿಸಿದ\nದೂರುಗಳು",
   
   "bottombar_dashboard": "ಡ್ಯಾಶ್ ಬೋರ್ಡ್",
   "bottombar_complaints": "ದೂರುಗಳು",
@@ -22,5 +22,12 @@
   "profile_chooseyourlanguage": "ನಿಮ್ಮ ಆದ್ಯತೆಯ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
   "profile_account": "ಖಾತೆ",
   "profile_logout": "ನಿರ್ಗಮನ",
-   "notification_title":"ಸೂಚನೆಗಳು"
+   "notification_title":"ಸೂಚನೆಗಳು",
+    "details_department":"ಇಲಾಖೆ",
+   "details_category":"ವರ್ಗ",
+   "details_city":"ನಗರ",
+   "details_Quarters":"ವಸತಿ ನಿಲಯ",
+   "details_flat":"ಫ್ಲಾಟ್ ಸಂಖ್ಯೆ",
+   "details_Complaintdate":"ದೂರು ದಿನಾಂಕ",
+   "details_artisanvisitdate":"ಭೇಟಿ ದಿನಾಂಕ"
 }

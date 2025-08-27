@@ -56,101 +56,119 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
     _searchController.dispose();
     super.dispose();
   }
-  
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:  CustomAppBar(title: "complaints_opencomplaints".tr()),
-      body: Column(
-        children: [
-          // Search Bar Section
-          Container(
-            height: ResponsiveUtils.hp(6),
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            decoration: BoxDecoration(
-              border: Border.all(color: Appcolors.kTertiaryColor, width: .5),
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withAlpha(33),
-                  spreadRadius: 1,
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search open complaints by Id...',
-                hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey[400],
-                  size: 20,
-                ),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: Icon(Icons.clear, color: Colors.grey[400]),
-                        onPressed: () {
-                          _searchController.clear();
-                          _onSearchChanged('');
-                        },
-                      )
-                    : null,
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: CustomAppBar(title: "complaints_opencomplaints".tr()),
+    body: Column(
+      children: [
+        // Search Bar Section (Keep this outside RefreshIndicator)
+        Container(
+          height: ResponsiveUtils.hp(6),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          decoration: BoxDecoration(
+            border: Border.all(color: Appcolors.kTertiaryColor, width: .5),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withAlpha(33),
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
-              onChanged: _onSearchChanged,
-            ),
+            ],
           ),
+          child: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Search open complaints by Id...',
+              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.grey[400],
+                size: 20,
+              ),
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: Icon(Icons.clear, color: Colors.grey[400]),
+                      onPressed: () {
+                        _searchController.clear();
+                        _onSearchChanged('');
+                      },
+                    )
+                  : null,
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 16,
+              ),
+            ),
+            onChanged: _onSearchChanged,
+          ),
+        ),
 
-          BlocBuilder<FetchOpencomplaintsBloc, FetchOpencomplaintsState>(
-            builder: (context, state) {
-              if (state is FetchopenComplaintlistsLoadingState) {
-                return ListView.builder(
-                      padding: const EdgeInsets.only(
-      left: 15,
-      right: 15,
-      top: 15,
-    ),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: ResponsiveUtils.hp(15),
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withAlpha(20),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: SpinKitCircle(
-                          size: 20,
-                          color: Appcolors.ksecondaryColor,
+        // Wrap the BlocBuilder content with RefreshIndicator
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _onRefresh,
+            color: Appcolors.ksecondaryColor, // Customize the refresh indicator color
+            backgroundColor: Colors.white,
+            strokeWidth: 2.0,
+            child: BlocBuilder<FetchOpencomplaintsBloc, FetchOpencomplaintsState>(
+              builder: (context, state) {
+                if (state is FetchopenComplaintlistsLoadingState) {
+                  // For loading state, wrap in scrollable widget for RefreshIndicator to work
+                  return SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          top: 15,
                         ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            height: ResponsiveUtils.hp(15),
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withAlpha(20),
+                                  spreadRadius: 1,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: SpinKitCircle(
+                                size: 20,
+                                color: Appcolors.ksecondaryColor,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                );
-              } else if (state is FetchopenComplaintsErrorState) {
-                  return Container(
+                    ),
+                  );
+                } else if (state is FetchopenComplaintsErrorState) {
+                  // For error state, wrap in scrollable widget
+                  return SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.6,
                       padding: const EdgeInsets.all(32),
                       child: Center(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.error_outline,
@@ -178,9 +196,9 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                             const SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () {
-                                   context.read<FetchOpencomplaintsBloc>().add(
-      FetchopenComplaintsInitialEvent(),
-    );
+                                context.read<FetchOpencomplaintsBloc>().add(
+                                  FetchopenComplaintsInitialEvent(),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Appcolors.ksecondaryColor,
@@ -194,15 +212,22 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                           ],
                         ),
                       ),
-                    );
-              } else if (state is FetchopenComplaintlistSuccessState) {
+                    ),
+                  );
+                } else if (state is FetchopenComplaintlistSuccessState) {
                   final complaintsToShow = state.filteredComplaints;
 
-                return Expanded(
-                  child: complaintsToShow.isEmpty
-                      ? _buildEmptyState()
+                  return complaintsToShow.isEmpty
+                      ? SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.6,
+                            child: _buildEmptyState(),
+                          ),
+                        )
                       : AnimationLimiter(
                           child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(), // Important for RefreshIndicator
                             padding: const EdgeInsets.only(
                               left: 15,
                               right: 15,
@@ -235,9 +260,7 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                                         color: Colors.transparent,
                                         borderRadius: BorderRadius.circular(12),
                                         child: InkWell(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
+                                          borderRadius: BorderRadius.circular(12),
                                           onTap: () {
                                             CustomNavigation.pushNamedWithTransition(
                                               context,
@@ -254,23 +277,18 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                                                 Expanded(
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                        CrossAxisAlignment.start,
                                                     children: [
                                                       // Complaint ID and Status
                                                       Text(
                                                         'Complaint: ${complaint.complaintId}',
                                                         style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontWeight: FontWeight.bold,
                                                           fontSize: 16,
                                                           color: Colors.black87,
                                                         ),
                                                       ),
-
-                                                      ResponsiveSizedBox
-                                                          .height5,
-
+                                                      ResponsiveSizedBox.height5,
                                                       // Category
                                                       Text(
                                                         'Category: ${complaint.categoryId}',
@@ -279,10 +297,7 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                                                           color: Colors.black54,
                                                         ),
                                                       ),
-
-                                                      ResponsiveSizedBox
-                                                          .height10,
-
+                                                      ResponsiveSizedBox.height10,
                                                       // Date
                                                       Text(
                                                         'Date: ${DateFormat('d MMM yyyy').format(DateTime.parse(complaint.complaintDate))}',
@@ -294,27 +309,17 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                                                     ],
                                                   ),
                                                 ),
-
                                                 // Arrow Icon
                                                 Container(
-                                                  padding: const EdgeInsets.all(
-                                                    10,
-                                                  ),
+                                                  padding: const EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
                                                     color: const Color.fromARGB(
-                                                      255,
-                                                      34,
-                                                      118,
-                                                      96,
-                                                    ),
+                                                        255, 34, 118, 96),
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                          8,
-                                                        ),
+                                                        BorderRadius.circular(8),
                                                   ),
-                                                  child: Icon(
-                                                    Icons
-                                                        .arrow_forward_ios_rounded,
+                                                  child: const Icon(
+                                                    Icons.arrow_forward_ios_rounded,
                                                     size: 16,
                                                     color: Colors.white,
                                                   ),
@@ -330,17 +335,308 @@ class _ScreenComplaintsPageState extends State<ScreenComplaintsPage> {
                               );
                             },
                           ),
-                        ),
-                );
-              } else {
-                return SizedBox.shrink();
-              }
-            },
+                        );
+                } else {
+                  return const SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(child: Text('No data available')),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar:  CustomAppBar(title: "complaints_opencomplaints".tr()),
+  //     body: Column(
+  //       children: [
+  //         // Search Bar Section
+  //         Container(
+  //           height: ResponsiveUtils.hp(6),
+  //           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+  //           decoration: BoxDecoration(
+  //             border: Border.all(color: Appcolors.kTertiaryColor, width: .5),
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(12),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.grey.withAlpha(33),
+  //                 spreadRadius: 1,
+  //                 blurRadius: 8,
+  //                 offset: const Offset(0, 2),
+  //               ),
+  //             ],
+  //           ),
+  //           child: TextField(
+  //             controller: _searchController,
+  //             decoration: InputDecoration(
+  //               hintText: 'Search open complaints by Id...',
+  //               hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+  //               prefixIcon: Icon(
+  //                 Icons.search,
+  //                 color: Colors.grey[400],
+  //                 size: 20,
+  //               ),
+  //               suffixIcon: _searchController.text.isNotEmpty
+  //                   ? IconButton(
+  //                       icon: Icon(Icons.clear, color: Colors.grey[400]),
+  //                       onPressed: () {
+  //                         _searchController.clear();
+  //                         _onSearchChanged('');
+  //                       },
+  //                     )
+  //                   : null,
+  //               border: InputBorder.none,
+  //               contentPadding: const EdgeInsets.symmetric(
+  //                 horizontal: 16,
+  //                 vertical: 16,
+  //               ),
+  //             ),
+  //             onChanged: _onSearchChanged,
+  //           ),
+  //         ),
+
+  //         BlocBuilder<FetchOpencomplaintsBloc, FetchOpencomplaintsState>(
+  //           builder: (context, state) {
+  //             if (state is FetchopenComplaintlistsLoadingState) {
+  //               return ListView.builder(
+  //                     padding: const EdgeInsets.only(
+  //     left: 15,
+  //     right: 15,
+  //     top: 15,
+  //   ),
+  //                 shrinkWrap: true,
+  //                 physics: const NeverScrollableScrollPhysics(),
+  //                 itemCount: 3,
+  //                 itemBuilder: (context, index) {
+  //                   return Container(
+  //                     height: ResponsiveUtils.hp(15),
+  //                     margin: const EdgeInsets.only(bottom: 12),
+  //                     decoration: BoxDecoration(
+  //                       color: Colors.white,
+  //                       borderRadius: BorderRadius.circular(12),
+  //                       boxShadow: [
+  //                         BoxShadow(
+  //                           color: Colors.grey.withAlpha(20),
+  //                           spreadRadius: 1,
+  //                           blurRadius: 4,
+  //                           offset: const Offset(0, 2),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     child: Center(
+  //                       child: SpinKitCircle(
+  //                         size: 20,
+  //                         color: Appcolors.ksecondaryColor,
+  //                       ),
+  //                     ),
+  //                   );
+  //                 },
+  //               );
+  //             } else if (state is FetchopenComplaintsErrorState) {
+  //                 return Container(
+  //                     padding: const EdgeInsets.all(32),
+  //                     child: Center(
+  //                       child: Column(
+  //                         children: [
+  //                           Icon(
+  //                             Icons.error_outline,
+  //                             size: 64,
+  //                             color: Colors.red.shade400,
+  //                           ),
+  //                           const SizedBox(height: 16),
+  //                           Text(
+  //                             state.message,
+  //                             style: TextStyle(
+  //                               fontSize: 18,
+  //                               fontWeight: FontWeight.w600,
+  //                               color: Colors.grey.shade600,
+  //                             ),
+  //                           ),
+  //                           const SizedBox(height: 8),
+  //                           Text(
+  //                             state.message,
+  //                             textAlign: TextAlign.center,
+  //                             style: TextStyle(
+  //                               fontSize: 14,
+  //                               color: Colors.grey.shade500,
+  //                             ),
+  //                           ),
+  //                           const SizedBox(height: 16),
+  //                           ElevatedButton(
+  //                             onPressed: () {
+  //                                  context.read<FetchOpencomplaintsBloc>().add(
+  //     FetchopenComplaintsInitialEvent(),
+  //   );
+  //                             },
+  //                             style: ElevatedButton.styleFrom(
+  //                               backgroundColor: Appcolors.ksecondaryColor,
+  //                               foregroundColor: Colors.white,
+  //                               shape: RoundedRectangleBorder(
+  //                                 borderRadius: BorderRadius.circular(8),
+  //                               ),
+  //                             ),
+  //                             child: const Text('Retry'),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   );
+  //             } else if (state is FetchopenComplaintlistSuccessState) {
+  //                 final complaintsToShow = state.filteredComplaints;
+
+  //               return Expanded(
+  //                 child: complaintsToShow.isEmpty
+  //                     ? _buildEmptyState()
+  //                     : AnimationLimiter(
+  //                         child: ListView.builder(
+  //                           padding: const EdgeInsets.only(
+  //                             left: 15,
+  //                             right: 15,
+  //                             top: 15,
+  //                           ),
+  //                           itemCount: complaintsToShow.length,
+  //                           itemBuilder: (context, index) {
+  //                             final complaint = complaintsToShow[index];
+  //                             return AnimationConfiguration.staggeredList(
+  //                               position: index,
+  //                               duration: const Duration(milliseconds: 600),
+  //                               child: SlideAnimation(
+  //                                 verticalOffset: 50.0,
+  //                                 child: FadeInAnimation(
+  //                                   child: Container(
+  //                                     margin: const EdgeInsets.only(bottom: 12),
+  //                                     decoration: BoxDecoration(
+  //                                       color: Colors.white,
+  //                                       borderRadius: BorderRadius.circular(12),
+  //                                       boxShadow: [
+  //                                         BoxShadow(
+  //                                           color: Colors.grey.withAlpha(20),
+  //                                           spreadRadius: 1,
+  //                                           blurRadius: 4,
+  //                                           offset: const Offset(0, 2),
+  //                                         ),
+  //                                       ],
+  //                                     ),
+  //                                     child: Material(
+  //                                       color: Colors.transparent,
+  //                                       borderRadius: BorderRadius.circular(12),
+  //                                       child: InkWell(
+  //                                         borderRadius: BorderRadius.circular(
+  //                                           12,
+  //                                         ),
+  //                                         onTap: () {
+  //                                           CustomNavigation.pushNamedWithTransition(
+  //                                             context,
+  //                                             AppRouter.complaintdetails,
+  //                                             arguments: {
+  //                                               'complaintdetails': complaint,
+  //                                             },
+  //                                           );
+  //                                         },
+  //                                         child: Padding(
+  //                                           padding: const EdgeInsets.all(16),
+  //                                           child: Row(
+  //                                             children: [
+  //                                               Expanded(
+  //                                                 child: Column(
+  //                                                   crossAxisAlignment:
+  //                                                       CrossAxisAlignment
+  //                                                           .start,
+  //                                                   children: [
+  //                                                     // Complaint ID and Status
+  //                                                     Text(
+  //                                                       'Complaint: ${complaint.complaintId}',
+  //                                                       style: const TextStyle(
+  //                                                         fontWeight:
+  //                                                             FontWeight.bold,
+  //                                                         fontSize: 16,
+  //                                                         color: Colors.black87,
+  //                                                       ),
+  //                                                     ),
+
+  //                                                     ResponsiveSizedBox
+  //                                                         .height5,
+
+  //                                                     // Category
+  //                                                     Text(
+  //                                                       'Category: ${complaint.categoryId}',
+  //                                                       style: const TextStyle(
+  //                                                         fontSize: 14,
+  //                                                         color: Colors.black54,
+  //                                                       ),
+  //                                                     ),
+
+  //                                                     ResponsiveSizedBox
+  //                                                         .height10,
+
+  //                                                     // Date
+  //                                                     Text(
+  //                                                       'Date: ${DateFormat('d MMM yyyy').format(DateTime.parse(complaint.complaintDate))}',
+  //                                                       style: const TextStyle(
+  //                                                         fontSize: 14,
+  //                                                         color: Colors.black54,
+  //                                                       ),
+  //                                                     ),
+  //                                                   ],
+  //                                                 ),
+  //                                               ),
+
+  //                                               // Arrow Icon
+  //                                               Container(
+  //                                                 padding: const EdgeInsets.all(
+  //                                                   10,
+  //                                                 ),
+  //                                                 decoration: BoxDecoration(
+  //                                                   color: const Color.fromARGB(
+  //                                                     255,
+  //                                                     34,
+  //                                                     118,
+  //                                                     96,
+  //                                                   ),
+  //                                                   borderRadius:
+  //                                                       BorderRadius.circular(
+  //                                                         8,
+  //                                                       ),
+  //                                                 ),
+  //                                                 child: Icon(
+  //                                                   Icons
+  //                                                       .arrow_forward_ios_rounded,
+  //                                                   size: 16,
+  //                                                   color: Colors.white,
+  //                                                 ),
+  //                                               ),
+  //                                             ],
+  //                                           ),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             );
+  //                           },
+  //                         ),
+  //                       ),
+  //               );
+  //             } else {
+  //               return SizedBox.shrink();
+  //             }
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildEmptyState() {
     return Center(

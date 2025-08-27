@@ -51,7 +51,7 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
         ),
         title: TextStyles.subheadline(
-          text:  "settings logout".tr(),
+          text:  "notification_title".tr(),
           color: Appcolors.kwhitecolor,
         ),
         centerTitle: true,

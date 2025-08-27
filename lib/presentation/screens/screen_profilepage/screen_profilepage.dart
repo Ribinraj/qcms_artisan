@@ -73,7 +73,7 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title:  "profile_profile".tr()),
+      appBar: CustomAppBar(title: "profile_profile".tr()),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -211,13 +211,13 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
             _buildSettingCard(
               icon: Icons.language,
               title: "profile_language".tr(),
-              subtitle:   "profile_chooseyourlanguage".tr(),
+              subtitle: "profile_chooseyourlanguage".tr(),
               child: _buildLanguageDropdown(),
             ),
 
-            ResponsiveSizedBox.height40,
-            _buildSectionTitle( "profile_account".tr()),
-            const SizedBox(height: 16),
+            ResponsiveSizedBox.height50,
+            // _buildSectionTitle("profile_account".tr()),
+            // const SizedBox(height: 16),
 
             // Logout Button
             Container(
@@ -237,8 +237,8 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
                   _showLogoutDialog();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Appcolors.kredcolor,
-                  foregroundColor: Appcolors.kwhitecolor,
+                  backgroundColor: Appcolors.kTertiaryColor,
+                  foregroundColor: Appcolors.kblackcolor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

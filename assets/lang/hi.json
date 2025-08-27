@@ -4,15 +4,15 @@
   "dashboard_qcmsforartisan": "क्वार्टर शिकायत प्रबंधन प्रणाली",
   "dashboard_developedby": "क्रिसेंट टेक्नोलॉजीज द्वारा डिज़ाइन और विकसित",
   "dashboard_complaintsoverview": "शिकायतों का अवलोकन",
-  "dashboard_opencomplaints": "खुली शिकायतें",
+  "dashboard_opencomplaints": "खुले शिकायतें",
   "dashboard_solvedcomplaints": "पर्यवसित शिकायतें",
 
   "bottombar_dashboard": "डैशबोर्ड",
-  "bottombar_complaints": "शिकायतें",
-  "bottombar_completed": "पूर्ण",
+  "bottombar_complaints": "खुले शिकायतें",
+  "bottombar_completed": "पूर्ण शिकायतें",
   "bottombar_profile": "व्यक्तिविवरण",
 
-  "complaints_opencomplaints": "खुली शिकायतें",
+  "complaints_opencomplaints": "खुले शिकायतें",
   "complaint_detals": "शिकायत विवरण",
   "completed_completedcomplaints": "पूर्ण शिकायतें",
 
@@ -22,5 +22,12 @@
   "profile_chooseyourlanguage": "अपनी पसंदीदा भाषा चुनें",
   "profile_account": "खाता",
   "profile_logout": "लॉगआउट",
-   "notification_title":"निर्देश"
+   "notification_title":"निर्देश",
+  "details_department":"विभाग",
+   "details_category":"श्रेणी",
+   "details_city":"शहर",
+   "details_Quarters":"क्वार्टर्स",
+   "details_flat":"फ्लैट नंबर",
+   "details_Complaintdate":"शिकायत की तारीख",
+   "details_artisanvisitdate":"मुलाक़ात की तारीख"
 }

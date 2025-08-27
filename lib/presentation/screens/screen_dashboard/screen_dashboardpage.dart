@@ -8,7 +8,9 @@ import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_dashboard_bloc/fetch_dashboard_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_profile_bloc/fetch_profile_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
+import 'package:qcms_artisan/widgets/custom_routes.dart';
 
 class ScreenDashboardpage extends StatefulWidget {
   const ScreenDashboardpage({super.key});
@@ -23,223 +25,249 @@ class _ScreenDashboardpageState extends State<ScreenDashboardpage> {
     // TODO: implement initState
     super.initState();
     context.read<FetchDashboardBloc>().add(FetchDashboardInitialEvent());
+    context.read<FetchProfileBloc>().add(FetchProfileInitialEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: "dashboard_title".tr()),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: AnimationLimiter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header Section with animation
-              AnimationConfiguration.staggeredList(
-                position: 0,
-                duration: const Duration(milliseconds: 600),
-                child: SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: CustomPaint(
-                      painter: HeaderPainter(),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                             "dashboard_indianrailway".tr(),
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                                color: Appcolors.kwhitecolor,
-                                letterSpacing: 1,
+    return BlocListener<FetchProfileBloc, FetchProfileState>(
+      listener: (context, state) {
+             if (state is FetchProfileErrorState &&
+            state.message == "Expired token") {
+          CustomNavigation.pushNamedAndRemoveUntil(context, AppRouter.login);
+        }
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(title: "dashboard_title".tr()),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: AnimationLimiter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Section with animation
+                AnimationConfiguration.staggeredList(
+                  position: 0,
+                  duration: const Duration(milliseconds: 600),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: CustomPaint(
+                        painter: HeaderPainter(),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "dashboard_indianrailway".tr(),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Appcolors.kwhitecolor,
+                                  letterSpacing: 1,
+                                ),
                               ),
-                            ),
-                            ResponsiveSizedBox.height10,
-                            Text(
-                               "dashboard_qcmsforartisan".tr(),
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: const Color.fromARGB(255, 255, 255, 255),
-                                fontWeight: FontWeight.w400,
+                              ResponsiveSizedBox.height10,
+                              Text(
+                                "dashboard_qcmsforartisan".tr(),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    255,
+                                    255,
+                                    255,
+                                  ),
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            ResponsiveSizedBox.height5,
-                            Text(
-                              "dashboard_developedby".tr(),
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Appcolors.kTertiaryColor,
-                                fontWeight: FontWeight.w400,
+                              ResponsiveSizedBox.height5,
+                              Text(
+                                "dashboard_developedby".tr(),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Appcolors.kTertiaryColor,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              ResponsiveSizedBox.height20,
+                ResponsiveSizedBox.height20,
 
-              AnimationConfiguration.staggeredList(
-                position: 1,
-                duration: const Duration(milliseconds: 600),
-                child: SlideAnimation(
-                  verticalOffset: 30.0,
-                  child: FadeInAnimation(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Lottie.asset(
-                        "assets/images/tools animation(1).json",
-                        height: ResponsiveUtils.hp(34),
-                        width: ResponsiveUtils.screenWidth,
-                        fit: BoxFit.contain,
+                AnimationConfiguration.staggeredList(
+                  position: 1,
+                  duration: const Duration(milliseconds: 600),
+                  child: SlideAnimation(
+                    verticalOffset: 30.0,
+                    child: FadeInAnimation(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Lottie.asset(
+                          "assets/images/tools animation(1).json",
+                          height: ResponsiveUtils.hp(34),
+                          width: ResponsiveUtils.screenWidth,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              // // Image Section with animation
-              // AnimationConfiguration.staggeredList(
-              //   position: 1, // keep position in sequence
-              //   duration: const Duration(milliseconds: 600),
-              //   child: SlideAnimation(
-              //     verticalOffset: 30.0,
-              //     child: FadeInAnimation(
-              //       child: ClipRRect(
-              //         borderRadius: BorderRadiusGeometry.circular(12),
-              //         child: Image.asset(
-              //           "assets/images/6405833_25693.jpg", // replace with your asset path
-              //           height: ResponsiveUtils.hp(34),
-              //           width: ResponsiveUtils.screenWidth,
-              //           fit: BoxFit
-              //               .cover, // keeps aspect ratio inside given size
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              ResponsiveSizedBox.height20,
-              AnimationConfiguration.staggeredList(
-                position: 1,
-                duration: const Duration(milliseconds: 600),
-                child: SlideAnimation(
-                  verticalOffset: 30.0,
-                  child: FadeInAnimation(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Section Title
-                        Row(
-                          children: [
-                            Container(
-                              width: 4,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: Appcolors.kprimaryColor,
-                                borderRadius: BorderRadius.circular(2),
+                // // Image Section with animation
+                // AnimationConfiguration.staggeredList(
+                //   position: 1, // keep position in sequence
+                //   duration: const Duration(milliseconds: 600),
+                //   child: SlideAnimation(
+                //     verticalOffset: 30.0,
+                //     child: FadeInAnimation(
+                //       child: ClipRRect(
+                //         borderRadius: BorderRadiusGeometry.circular(12),
+                //         child: Image.asset(
+                //           "assets/images/6405833_25693.jpg", // replace with your asset path
+                //           height: ResponsiveUtils.hp(34),
+                //           width: ResponsiveUtils.screenWidth,
+                //           fit: BoxFit
+                //               .cover, // keeps aspect ratio inside given size
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                ResponsiveSizedBox.height20,
+                AnimationConfiguration.staggeredList(
+                  position: 1,
+                  duration: const Duration(milliseconds: 600),
+                  child: SlideAnimation(
+                    verticalOffset: 30.0,
+                    child: FadeInAnimation(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Section Title
+                          Row(
+                            children: [
+                              Container(
+                                width: 4,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: Appcolors.kprimaryColor,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                               "dashboard_complaintsoverview".tr(),
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade800,
+                              const SizedBox(width: 12),
+                              Text(
+                                "dashboard_complaintsoverview".tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade800,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        ResponsiveSizedBox.height20,
-                        BlocBuilder<FetchDashboardBloc, FetchDashboardState>(
-                          builder: (context, state) {
-                            if (state is FetchDashboardLoadingState) {
-                              return Row(
-                                children: [
-                                  CustomPaint(
-                                    painter: EnhancedCardPainter(
-                                      color: Appcolors.kprimaryColor,
-                                      radius: 10,
-                                    ),
-                                    child: Container(
-                                      width: ResponsiveUtils.wp(43),
-                                      height: ResponsiveUtils.hp(13),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 12,
-                                        //horizontal: ResponsiveUtils.wp(3),
+                            ],
+                          ),
+                          ResponsiveSizedBox.height20,
+                          BlocBuilder<FetchDashboardBloc, FetchDashboardState>(
+                            builder: (context, state) {
+                              if (state is FetchDashboardLoadingState) {
+                                return Row(
+                                  children: [
+                                    CustomPaint(
+                                      painter: EnhancedCardPainter(
+                                        color: Appcolors.kprimaryColor,
+                                        radius: 10,
                                       ),
-                                      child: Center(
-                                        child: SpinKitCircle(
-                                          size: 17,
-                                          color: Appcolors.kwhitecolor,
+                                      child: Container(
+                                        width: ResponsiveUtils.wp(43),
+                                        height: ResponsiveUtils.hp(13),
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          //horizontal: ResponsiveUtils.wp(3),
+                                        ),
+                                        child: Center(
+                                          child: SpinKitCircle(
+                                            size: 17,
+                                            color: Appcolors.kwhitecolor,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Spacer(),
-                                  CustomPaint(
-                                    painter: EnhancedCardPainter(
-                                      color: Appcolors.kprimaryColor,
-                                      radius: 10,
-                                    ),
-                                    child: Container(
-                                      width: ResponsiveUtils.wp(43),
-                                      height: ResponsiveUtils.hp(13),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 12,
-                                        //horizontal: ResponsiveUtils.wp(3),
+                                    Spacer(),
+                                    CustomPaint(
+                                      painter: EnhancedCardPainter(
+                                        color: Appcolors.kprimaryColor,
+                                        radius: 10,
                                       ),
-                                      child: Center(
-                                        child: SpinKitCircle(
-                                          size: 17,
-                                          color: Appcolors.kwhitecolor,
+                                      child: Container(
+                                        width: ResponsiveUtils.wp(43),
+                                        height: ResponsiveUtils.hp(13),
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          //horizontal: ResponsiveUtils.wp(3),
+                                        ),
+                                        child: Center(
+                                          child: SpinKitCircle(
+                                            size: 17,
+                                            color: Appcolors.kwhitecolor,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            } else if (state is FetchDashboardSuccessState) {
-                              return Row(
-                                children: [
-                                  _buildStatCard(
-                                    title:  "dashboard_opencomplaints".tr(),
-                                    value: state.dashboard.openComplaints,
-                                    color: Appcolors.kprimaryColor,
-                                  ),
-                                  Spacer(),
-                                  _buildStatCard(
-                                    title:    "dashboard_solvedcomplaints".tr(),
-                                    value: state.dashboard.completedComplaints,
-                                    color: Appcolors.kprimaryColor,
-                                  ),
-                                ],
-                              );
-                            } else if (state is FetchDashboardErrorState) {
-                              return Center(child: Text(state.message));
-                            } else {
-                              return SizedBox.shrink();
-                            }
-                          },
-                        ),
-                        ResponsiveSizedBox.height20,
-                        const SizedBox(height: 20),
-                      ],
+                                  ],
+                                );
+                              } else if (state is FetchDashboardSuccessState) {
+                                return Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        navigateToMainPageNamed(context, 1);
+                                      },
+                                      child: _buildStatCard(
+                                        title: "dashboard_opencomplaints".tr(),
+                                        value: state.dashboard.openComplaints,
+                                        color: Appcolors.kprimaryColor,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    InkWell(
+                                      onTap: () {
+                                        navigateToMainPageNamed(context, 2);
+                                      },
+                                      child: _buildStatCard(
+                                        title: "dashboard_solvedcomplaints"
+                                            .tr(),
+                                        value:
+                                            state.dashboard.completedComplaints,
+                                        color: Appcolors.kprimaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              } else if (state is FetchDashboardErrorState) {
+                                return Center(child: Text(state.message));
+                              } else {
+                                return SizedBox.shrink();
+                              }
+                            },
+                          ),
+                          ResponsiveSizedBox.height20,
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              ResponsiveSizedBox.height20,
-            ],
+                ResponsiveSizedBox.height20,
+              ],
+            ),
           ),
         ),
       ),

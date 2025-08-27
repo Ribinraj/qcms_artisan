@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qcms_artisan/core/appconstants.dart';
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
@@ -47,26 +48,52 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Logo Container
-                    Container(
-                      width: ResponsiveUtils.wp(60),
-                      height: ResponsiveUtils.hp(20),
-                      decoration: BoxDecoration(
-                        color: Appcolors.kprimaryColor,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withAlpha(33),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
+                    SizedBox(
+                      height: ResponsiveUtils.hp(12),
+                      width: double.infinity,
+                      child: Image.asset(
+                        Appconstants.whitelogo,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Fallback widget if image not found
+                          return Container(
+                            height: ResponsiveUtils.hp(8),
+                            width: ResponsiveUtils.wp(8),
+
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color.fromARGB(255, 151, 149, 149),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              Icons.image,
+                              size: 30,
+                              color: Colors.grey[400],
+                            ),
+                          );
+                        },
                       ),
-                      child: Image.asset('assets/images/full_logo.png'),
                     ),
-                    ResponsiveSizedBox.height30,
+                    // Logo Container
+                    // Container(
+                    //   width: ResponsiveUtils.wp(60),
+                    //   height: ResponsiveUtils.hp(20),
+                    //   decoration: BoxDecoration(
+                    //     color: Appcolors.kprimaryColor,
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.black.withAlpha(33),
+                    //         blurRadius: 10,
+                    //         offset: const Offset(0, 5),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   child: Image.asset('assets/images/full_logo.png'),
+                    // ),
+                    ResponsiveSizedBox.height40,
                     TextStyles.headline(
-                      text: 'Artisan Connect ',
+                      text: 'QCMS for Artisans',
                       color: Appcolors.kTertiaryColor,
                     ),
                     ResponsiveSizedBox.height10,
@@ -89,15 +116,15 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextStyles.headline(
-                        text: 'Enter Mobile Number',
-                        color: Appcolors.kprimarytextColor,
-                      ),
-                      ResponsiveSizedBox.height10,
-                      TextStyles.medium(
-                        text: 'We\'ll send you a verification code',
-                        color: Appcolors.kprimarytextColor,
-                      ),
+                      // TextStyles.headline(
+                      //   text: 'Enter Mobile Number',
+                      //   color: Appcolors.kprimarytextColor,
+                      // ),
+                      // ResponsiveSizedBox.height10,
+                      // TextStyles.medium(
+                      //   text: 'We\'ll send you a verification code',
+                      //   color: Appcolors.kprimarytextColor,
+                      // ),
                       ResponsiveSizedBox.height30,
 
                       // Custom Mobile Number Field
@@ -181,7 +208,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       //   },
                       //   text: 'Send OTP',
                       // ),
-                      ResponsiveSizedBox.height30,
+                      SizedBox(height: ResponsiveUtils.hp(12)),
 
                       Container(
                         padding: EdgeInsets.all(5),

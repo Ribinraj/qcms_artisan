@@ -51,15 +51,15 @@ class _ScreenComplaintdetailsPageState
               color: const Color.fromARGB(255, 255, 255, 255),
               child: Column(
                 children: [
-                  _buildDetailRow('Department', widget.complaint.departmentId),
+                  _buildDetailRow("details_department".tr(), widget.complaint.departmentId),
                   _buildDivider(),
-                  _buildDetailRow('Category', widget.complaint.categoryId),
+                  _buildDetailRow("details_category".tr(), widget.complaint.categoryId),
                   _buildDivider(),
-                  _buildDetailRow('City', widget.complaint.cityId),
+                  _buildDetailRow(   "details_city".tr(), widget.complaint.cityId),
                   _buildDivider(),
-                  _buildDetailRow('Quarters', widget.complaint.quarterId),
+                  _buildDetailRow( "details_Quarters".tr(), widget.complaint.quarterId),
                   _buildDivider(),
-                  _buildDetailRow('Flat#', widget.complaint.flatId),
+                  _buildDetailRow( "details_flat".tr(), widget.complaint.flatId),
                   _buildDivider(),
                   // _buildDetailRow(
                   //   'Complaint Remarks',
@@ -68,14 +68,14 @@ class _ScreenComplaintdetailsPageState
                   // ),
                   // _buildDivider(),
                   _buildDetailRow(
-                    'Complaint Date',
+                     "details_Complaintdate".tr(),
                     DateFormat(
                       'd MMM yyyy',
                     ).format(DateTime.parse(widget.complaint.complaintDate)),
                   ),
                   _buildDivider(),
                   _buildDetailRow(
-                    'Artisan visit Date',
+                   "details_artisanvisitdate".tr(),
                     DateFormat(
                       'd MMM yyyy',
                     ).format(DateTime.parse(widget.complaint.complaintDate)),

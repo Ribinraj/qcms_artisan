@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.backgroundColor = Appcolors.kprimaryColor,
-    this.iconColor = Appcolors.kTertiaryColor,
+    this.iconColor = Appcolors.kwhitecolor,
     this.onMenuPressed,
     this.onNotificationPressed,
   });
@@ -51,7 +51,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: ResponsiveUtils.wp(7),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(Appconstants.appLogo),
+                    image: AssetImage(Appconstants.whitelogo),
                     // Your logo asset
                     fit: BoxFit.contain,
                   ),

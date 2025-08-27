@@ -99,7 +99,7 @@ class BottomNavigationWidget extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
               activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/remove_13962958.png',
                   color: Appcolors.kwhitecolor, // active color
@@ -108,7 +108,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 ),
               ),
               icon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/remove_13962958.png',
                   color: Appcolors.kTertiaryColor, // inactive color
@@ -116,11 +116,11 @@ class BottomNavigationWidget extends StatelessWidget {
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label:  "bottombar_dashboard".tr(),
+              label: "bottombar_dashboard".tr(),
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/exam_3074131.png',
                   color: Appcolors.kwhitecolor, // active color
@@ -129,7 +129,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 ),
               ),
               icon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/exam_3074131.png',
                   color: Appcolors.kTertiaryColor, // inactive color
@@ -137,11 +137,11 @@ class BottomNavigationWidget extends StatelessWidget {
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label:"bottombar_complaints".tr(),
+              label: "bottombar_complaints".tr(),
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/solution_10161169.png',
                   color: Appcolors.kwhitecolor, // active color
@@ -150,7 +150,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 ),
               ),
               icon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/solution_10161169.png',
                   color: Appcolors.kTertiaryColor, // inactive color
@@ -162,7 +162,7 @@ class BottomNavigationWidget extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/people_13916215.png',
                   color: Appcolors.kwhitecolor, // active color
@@ -171,7 +171,7 @@ class BottomNavigationWidget extends StatelessWidget {
                 ),
               ),
               icon: Padding(
-                padding: const EdgeInsets.only(bottom: 3),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Image.asset(
                   'assets/images/people_13916215.png',
                   color: Appcolors.kTertiaryColor, // inactive color
@@ -179,7 +179,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   height: ResponsiveUtils.wp(6),
                 ),
               ),
-              label:   "bottombar_profile".tr(),
+              label: "bottombar_profile".tr(),
             ),
           ],
         );

@@ -228,7 +228,9 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:qcms_artisan/core/appconstants.dart';
 
 import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
@@ -319,6 +321,14 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light, // White icons
+        statusBarBrightness: Brightness.dark, // iOS
+      ),
+    );
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -373,7 +383,7 @@ class _SplashScreenState extends State<SplashScreen>
                               width: 70,
                               height: 70,
                               child: Image.asset(
-                                'assets/images/q_logo.png',
+                                Appconstants.whitelogo,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -393,26 +403,20 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _textFadeAnimation,
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              'QCMS',
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 2.0,
-                              ),
-                            ),
-                            TextStyles.body(
-                              text: "FOR ARTISAN",
-                              color: Appcolors.kwhitecolor,
-                              weight: FontWeight.bold,
-                            ),
-                          ],
+                        Text(
+                          'QCMS',
+                          style: TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+
+                        TextStyles.body(
+                          text: "FOR ARTISANS",
+                          color: Appcolors.kwhitecolor,
+                          weight: FontWeight.bold,
                         ),
 
                         const SizedBox(height: 8),

@@ -30,11 +30,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-    await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  
-    final pushNotifications = PushNotifications();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final pushNotifications = PushNotifications();
   await pushNotifications.init();
   if (Platform.isIOS) {
     await FirebaseMessaging.instance.requestPermission(
@@ -44,20 +42,20 @@ void main() async {
       provisional: false,
     );
   }
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   const SystemUiOverlayStyle(
+  //     statusBarColor: Colors.transparent,
+  //     statusBarIconBrightness: Brightness.dark,
+  //     statusBarBrightness: Brightness.light,
+  //   ),
+  // );
+  final prefs = await SharedPreferences.getInstance();
+  final langcode = prefs.getString('langCode') ?? 'en';
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
-    ),
-  );
-  final prefs = await SharedPreferences.getInstance();
-  final langcode = prefs.getString('langCode') ?? 'en';
-    SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
     ),
   );
   await SystemChrome.setPreferredOrientations([
@@ -66,7 +64,7 @@ void main() async {
   ]);
   runApp(
     EasyLocalization(
-      supportedLocales:const [Locale('en'), Locale('hi'), Locale('kn')],
+      supportedLocales: const [Locale('en'), Locale('hi'), Locale('kn')],
       path: 'assets/lang',
       fallbackLocale: const Locale('en'),
       startLocale: Locale(langcode),
@@ -85,12 +83,25 @@ void main() async {
           BlocProvider(
             create: (context) => ResendOtpBloc(repository: LoginRepo()),
           ),
-           BlocProvider(create: (context) => FetchDashboardBloc(repository:Apprepo())),
-            BlocProvider(create: (context) =>FetchProfileBloc(repository:LoginRepo())),
-             BlocProvider(create: (context) =>FetchOpencomplaintsBloc(repository:Apprepo())),
-                          BlocProvider(create: (context) =>FetchSolvedcomplaintsBloc(repository:Apprepo())),
-                             BlocProvider(create: (context) =>FetchNotificationsBloc(repository:Apprepo())),
-                                BlocProvider(create: (context) =>RequestOtpBloc(repository:Apprepo())),
+          BlocProvider(
+            create: (context) => FetchDashboardBloc(repository: Apprepo()),
+          ),
+          BlocProvider(
+            create: (context) => FetchProfileBloc(repository: LoginRepo()),
+          ),
+          BlocProvider(
+            create: (context) => FetchOpencomplaintsBloc(repository: Apprepo()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                FetchSolvedcomplaintsBloc(repository: Apprepo()),
+          ),
+          BlocProvider(
+            create: (context) => FetchNotificationsBloc(repository: Apprepo()),
+          ),
+          BlocProvider(
+            create: (context) => RequestOtpBloc(repository: Apprepo()),
+          ),
         ],
         child: const MyApp(),
       ),
@@ -109,7 +120,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRouter.generateRoute,
       initialRoute: AppRouter.splashpage,
-      locale:context.locale,
+      locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
 
@@ -122,6 +133,13 @@ class MyApp extends StatelessWidget {
       title: 'QCMS_Artisan',
       theme: ThemeData(
         fontFamily: 'Helvetica',
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light, // white icons
+            statusBarBrightness: Brightness.dark, // iOS
+          ),
+        ),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         scaffoldBackgroundColor: Appcolors.kbackgroundcolor,
