@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDygxghxCXJoPzQUMOZYYWyTC0B_bfCCSY</string>
+	<string>AIzaSyDRuO-z4ZykhjZnWxBRTM1L7dTtZBLwCRk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>314216449206</string>
+	<string>530933538361</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.crisant.artisan</string>
 	<key>PROJECT_ID</key>
-	<string>qcomplaints-39612</string>
+	<string>qcms-artisans</string>
 	<key>STORAGE_BUCKET</key>
-	<string>qcomplaints-39612.firebasestorage.app</string>
+	<string>qcms-artisans.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:314216449206:ios:28017eab614513b7a21217</string>
+	<string>1:530933538361:ios:72751b69408e363eebf7e8</string>
 </dict>
 </plist>

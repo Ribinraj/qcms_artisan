@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBkJjM7D9CTe8F97ZrWC9dGxy7nfSyHOBE',
-    appId: '1:314216449206:android:bb3adc9d763fc092a21217',
-    messagingSenderId: '314216449206',
-    projectId: 'qcomplaints-39612',
-    storageBucket: 'qcomplaints-39612.firebasestorage.app',
+    apiKey: 'AIzaSyCj25wAC8Og2iBIJX-Fwa_punufHTb6h-0',
+    appId: '1:530933538361:android:94710009ada3e5f1ebf7e8',
+    messagingSenderId: '530933538361',
+    projectId: 'qcms-artisans',
+    storageBucket: 'qcms-artisans.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDygxghxCXJoPzQUMOZYYWyTC0B_bfCCSY',
-    appId: '1:314216449206:ios:28017eab614513b7a21217',
-    messagingSenderId: '314216449206',
-    projectId: 'qcomplaints-39612',
-    storageBucket: 'qcomplaints-39612.firebasestorage.app',
+    apiKey: 'AIzaSyDRuO-z4ZykhjZnWxBRTM1L7dTtZBLwCRk',
+    appId: '1:530933538361:ios:72751b69408e363eebf7e8',
+    messagingSenderId: '530933538361',
+    projectId: 'qcms-artisans',
+    storageBucket: 'qcms-artisans.firebasestorage.app',
     iosBundleId: 'com.crisant.artisan',
   );
 }

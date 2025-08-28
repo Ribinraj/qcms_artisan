@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "314216449206",
-    "project_id": "qcomplaints-39612",
-    "storage_bucket": "qcomplaints-39612.firebasestorage.app"
+    "project_number": "530933538361",
+    "project_id": "qcms-artisans",
+    "storage_bucket": "qcms-artisans.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:314216449206:android:bb3adc9d763fc092a21217",
+        "mobilesdk_app_id": "1:530933538361:android:94710009ada3e5f1ebf7e8",
         "android_client_info": {
           "package_name": "com.crisant.artisan"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBkJjM7D9CTe8F97ZrWC9dGxy7nfSyHOBE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:314216449206:android:99bb4e0dc7164804a21217",
-        "android_client_info": {
-          "package_name": "com.crisant.kamini"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBkJjM7D9CTe8F97ZrWC9dGxy7nfSyHOBE"
+          "current_key": "AIzaSyCj25wAC8Og2iBIJX-Fwa_punufHTb6h-0"
         }
       ],
       "services": {
