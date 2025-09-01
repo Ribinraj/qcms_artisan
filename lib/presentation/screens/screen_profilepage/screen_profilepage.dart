@@ -70,6 +70,8 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
     }
   }
 
+  String? username;
+  String? mobilenumber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +115,8 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
                     ),
                   );
                 } else if (state is FetchProfileSuccessState) {
+                  username = state.user.artisanName;
+                  mobilenumber = state.user.artisanMobile;
                   return Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(24),
@@ -261,7 +265,29 @@ class _ScreenSettingsPageState extends State<ScreenProfilepage> {
                 ),
               ),
             ),
-
+            ResponsiveSizedBox.height10,
+            Row(
+              children: [
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    CustomNavigation.pushNamedWithTransition(
+                      context,
+                      AppRouter.deleteaccount,
+                      arguments: {
+                        'userName': username,
+                        'mobileNumber': mobilenumber,
+                      },
+                    );
+                  },
+                  child: TextStyles.medium(
+                    text: 'Delete Account?',
+                    weight: FontWeight.bold,
+                    color: Appcolors.kredcolor,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 32),
           ],
         ),

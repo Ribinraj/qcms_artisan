@@ -15,12 +15,17 @@ import 'package:qcms_artisan/firebase_options.dart';
 
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/connectivity_bloc/connectivity_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/delete_account_bloc/delete_account_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_complaint_categories/fetch_complaint_categories_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_dashboard_bloc/fetch_dashboard_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_departments_bloc/fetch_departments_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/fetch_division_bloc/fetch_division_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_notifications_bloc/fetch_notifications_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_opencomplaints/fetch_opencomplaints_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_profile_bloc/fetch_profile_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_solvedcomplaints/fetch_solvedcomplaints_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/language_cubit/language_cubit.dart';
+import 'package:qcms_artisan/presentation/bloc/register_artisan_bloc/register_artisan_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/request_otp_bloc/request_otp_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/resend_otp_bloc/resend_otp_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/send_otp_bloc/send_otp_bloc.dart';
@@ -102,6 +107,21 @@ void main() async {
           ),
           BlocProvider(
             create: (context) => RequestOtpBloc(repository: Apprepo()),
+          ),
+               BlocProvider(
+            create: (context) => FetchDivisionBloc(repository: Apprepo()),
+          ),
+               BlocProvider(
+            create: (context) => FetchDepartmentsBloc(repository: Apprepo()),
+          ),
+               BlocProvider(
+            create: (context) => FetchComplaintCategoriesBloc(repository: Apprepo()),
+          ),
+                     BlocProvider(
+            create: (context) => DeleteAccountBloc(repository: LoginRepo()),
+          ),
+                       BlocProvider(
+            create: (context) => RegisterArtisanBloc(repository: LoginRepo()),
           ),
         ],
         child: const MyApp(),

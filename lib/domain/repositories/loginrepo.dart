@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qcms_artisan/core/urls.dart';
 import 'package:qcms_artisan/data/profilemodel.dart';
+import 'package:qcms_artisan/data/register_artisan.dart';
 import 'package:qcms_artisan/widgets/custom_sharedprefrences.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +14,7 @@ class ApiResponse<T> {
   final T? data;
   final String message;
   final bool error;
-  final int status;
+  final int status;  
 
   ApiResponse({
     this.data,
@@ -77,7 +78,45 @@ class LoginRepo {
       );
     }
   }
+  ///////////// registerartisan/////////////
+  Future<ApiResponse>registerartisan({required  RegisterArtisanModel artisan}) async {
+    try {
+   
 
+      Response response = await dio.post(
+        Endpoints.registerartisan,
+        data: artisan,
+      );
+
+      final responseData = response.data;
+      if (!responseData["error"] && responseData["status"] == 200) {
+     
+        // final customerType = responseData["data"]["customerType"].toString();
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
   // ///////////// verifyotp/////////////
   Future<ApiResponse> verifyotp({
     required String otp,
@@ -231,7 +270,41 @@ class LoginRepo {
       log("Error updating FCM token: $e");
     }
   }
+//   /////////////deleteAccount/////////////
+  Future<ApiResponse>deleteaccount({required String reason}) async {
+    try {
+       final token = await getUserToken();
+      Response response =
+          await dio.post(Endpoints.deleteaccount, 
+             options: Options(headers: {'Authorization': token}),data: { "reason":reason});
 
+      final responseData = response.data;
+      if (!responseData["error"] && responseData["status"] == 200) {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
   void dispose() {
     dio.close();
   }

@@ -4,8 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:qcms_artisan/core/urls.dart';
+import 'package:qcms_artisan/data/complaint_categorymodel.dart';
 import 'package:qcms_artisan/data/complaint_model.dart';
 import 'package:qcms_artisan/data/dashboard_model.dart';
+import 'package:qcms_artisan/data/departmentmodel.dart';
+import 'package:qcms_artisan/data/devison_model.dart';
 import 'package:qcms_artisan/data/notification_model.dart';
 import 'package:qcms_artisan/widgets/custom_sharedprefrences.dart';
 
@@ -242,5 +245,129 @@ class Apprepo {
       );
     }
   }
+//////////////////////////////////////////////////////////////////
+  Future<ApiResponse<List<DivisionsModel>>> fetchdivisions() async {
+    try {
+      // final token = await getUserToken();
+      Response response = await dio.get(
+        Endpoints.fetchdevisions,
+        //options: Options(headers: {'Authorization': token}),
+      );
 
+      final responseData = response.data;
+      log('divisoionssssssss${responseData['status']}');
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final List<dynamic> divisionlist = responseData['data'];
+        List<DivisionsModel> divisions = divisionlist
+            .map((category) => DivisionsModel.fromJson(category))
+            .toList();
+        return ApiResponse(
+          data: divisions,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
+  ///////////// Fetch fetchdepartments/////////////
+  Future<ApiResponse<List<DepartmentModel>>> fetchdepartments() async {
+    try {
+     // final token = await getUserToken();
+      Response response = await dio.get(
+        Endpoints.fetchdepartments,
+      //  options: Options(headers: {'Authorization': token}),
+      );
+
+      final responseData = response.data;
+      log('divisoionssssssss${responseData['status']}');
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final List<dynamic> departmentlist = responseData['data'];
+        List<DepartmentModel> departments = departmentlist
+            .map((category) => DepartmentModel.fromJson(category))
+            .toList();
+        return ApiResponse(
+          data: departments,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
+ ///////////// Fetch complaintcategorys/////////////
+  Future<ApiResponse<List<ComplaintCategorymodel>>> fetchcomplaintcategories({required String departmentId}) async {
+    try {
+     //  final token = await getUserToken();
+      Response response = await dio.post(
+        Endpoints.fetchcomplaintcategories,data:{
+      "departmentId": departmentId
+},
+       // options: Options(headers: {'Authorization': token}),
+      );
+
+      final responseData = response.data;
+      log('divisoionssssssss${responseData['status']}');
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final List<dynamic> complaintcategorylists = responseData['data'];
+        List<ComplaintCategorymodel> complaintcategoires = complaintcategorylists
+            .map((category) => ComplaintCategorymodel.fromJson(category))
+            .toList();
+        return ApiResponse(
+          data: complaintcategoires,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
 }

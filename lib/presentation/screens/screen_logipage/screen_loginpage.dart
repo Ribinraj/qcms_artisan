@@ -33,13 +33,13 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
 
   @override
   Widget build(BuildContext context) {
-      SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark,
-    ),
-  );
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
     return Scaffold(
       body: SizedBox(
         height: ResponsiveUtils.screenHeight,
@@ -132,7 +132,6 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       //   text: 'We\'ll send you a verification code',
                       //   color: Appcolors.kprimarytextColor,
                       // ),
-                      ResponsiveSizedBox.height30,
 
                       // Custom Mobile Number Field
                       CustomTextField(
@@ -201,7 +200,7 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                           );
                         },
                       ),
-
+                      ResponsiveSizedBox.height30,
                       // Customloginbutton(
                       //   onPressed: () {
                       //     CustomNavigation.pushNamedWithTransition(
@@ -215,7 +214,18 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
                       //   },
                       //   text: 'Send OTP',
                       // ),
-                      SizedBox(height: ResponsiveUtils.hp(12)),
+                      _buildFeatureCard(
+                        icon: Icons.business_center_rounded,
+                        title: 'Register your Account',
+                        description:
+                            'If you don’t have an account, you can create one',
+                        onTap: () {
+                          CustomNavigation.pushNamedWithTransition(
+                            context,
+                            AppRouter.registeraccount,
+                          );
+                        },
+                      ),
 
                       Container(
                         padding: EdgeInsets.all(5),
@@ -307,5 +317,88 @@ class _ScreenLoginpageState extends State<ScreenLoginpage> {
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
+  }
+
+  Widget _buildFeatureCard({
+    required IconData icon,
+    required String title,
+    required String description,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.white.withAlpha(277), Colors.white.withAlpha(244)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Appcolors.ksecondaryColor.withOpacity(0.3),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Appcolors.ksecondaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: Appcolors.ksecondaryColor,
+                        size: 20,
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: TextStyles.body(
+                        text: title,
+                        weight: FontWeight.w600,
+                        color: Appcolors.kprimaryColor,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Appcolors.kblackcolor,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Appcolors.kblackcolor,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

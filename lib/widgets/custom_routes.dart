@@ -4,11 +4,13 @@ import 'package:qcms_artisan/data/complaint_model.dart';
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
 import 'package:qcms_artisan/presentation/screens/screen_complaintdetailspage/screen_complaintdetailspage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_completed_complaintdetailspage.dart/screen_completedcomplaint_detailspage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_deleteaccount/screen_deleteaccount.dart';
 import 'package:qcms_artisan/presentation/screens/screen_disclaimerpage/screen_diclaimerpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_logipage/screen_loginpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_mainpage/screen_mainpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_notification/screen_notificationpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_otppage/screen_otppage.dart';
+import 'package:qcms_artisan/presentation/screens/screen_registrationpage/screen_registrationpage.dart';
 import 'package:qcms_artisan/presentation/screens/screen_splashpage/screen_splashpage.dart';
 
 // SINGLE ROUTE GENERATOR CLASS - This is all you need!
@@ -26,7 +28,8 @@ class AppRouter {
   static const String splashpage = '/splashpage';
   static const String disclaimer = '/disclaimer';
   static const String notification = '/notification';
-
+  static const String deleteaccount = '/deleteaccount';
+  static const String registeraccount = '/registeraccount';
   // Single method to generate all routes
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments as Map<String, dynamic>?;
@@ -48,12 +51,12 @@ class AppRouter {
           settings: settings,
         );
 
-      // case register:
-      //   return MaterialPageRoute(
-      //     builder: (_) =>
-      //         ScreenRegisterpage(), // Replace with your actual screen
-      //     settings: settings,
-      //   );
+      case registeraccount:
+        return MaterialPageRoute(
+          builder: (_) =>
+             ScreenRegistrationpage(),
+          settings: settings,
+        );
       case completedcomplaintdetails:
         final complaint = args?['complaintdetails'] as ComplaintModel?;
         if (complaint != null) {
@@ -61,9 +64,24 @@ class AppRouter {
             builder: (_) =>
                 ScreenCompletedcomplaintDetailspage(complaint: complaint),
           );
-        }else{
-                    return _errorRoute(
+        } else {
+          return _errorRoute(
             'Missing complaintdetails parameter for Complaint Details page',
+          );
+        }
+      case deleteaccount:
+        final username = args?['userName'] as String?;
+        final mobileNumber = args?['mobileNumber'] as String?;
+        if (username != null && mobileNumber != null) {
+          return MaterialPageRoute(
+            builder: (_) => DeleteAccountPage(
+              username: username,
+              mobilenumber: mobileNumber,
+            ),
+          );
+        } else {
+          return _errorRoute(
+            'Missing required parameters for Verify OTP: flatId and mobileNumber',
           );
         }
       case verifyOTP:

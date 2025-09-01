@@ -10,4 +10,9 @@ class Endpoints {
   static const settoken = 'artisans/login/settoken';
   static const notification = 'artisans/login/notifications';
   static const requestotp = 'artisans/login/requestotp';
+  static const fetchdevisions = 'consumer/masters/divisions';
+  static const fetchdepartments = 'consumer/masters/departments';
+  static const fetchcomplaintcategories = 'consumer/masters/categories';
+  static const deleteaccount = 'artisans/login/deleteaccount';
+  static const registerartisan = 'artisans/login/register';
 }
