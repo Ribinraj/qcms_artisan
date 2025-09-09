@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -7,6 +8,7 @@ import 'package:qcms_artisan/core/colors.dart';
 import 'package:qcms_artisan/core/constants.dart';
 import 'package:qcms_artisan/core/responsiveutils.dart';
 import 'package:qcms_artisan/data/complaint_model.dart';
+import 'package:qcms_artisan/presentation/bloc/close_complaint_bloc/close_complaint_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/request_otp_bloc/request_otp_bloc.dart';
 import 'package:qcms_artisan/widgets/custom_appbar.dart';
 import 'package:qcms_artisan/widgets/custom_networkimage.dart';
@@ -24,85 +26,32 @@ class ScreenComplaintdetailsPage extends StatefulWidget {
 
 class _ScreenComplaintdetailsPageState
     extends State<ScreenComplaintdetailsPage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "complaint_detals".tr()),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Complaint Number
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: TextStyles.subheadline(
-                text: 'Complaint #${widget.complaint.complaintId}',
-              ),
-            ),
-            ImageWithFallback(
-              imageUrl: widget.complaint.imageAddress,
-              height: ResponsiveUtils.hp(30),
-              width: ResponsiveUtils.screenWidth,
-            ),
-            // Details Card
-            ResponsiveSizedBox.height20,
-            Container(
-              color: const Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  _buildDetailRow( "details_department".tr(), widget.complaint.departmentId),
-                  _buildDivider(),
-                  _buildDetailRow("details_category".tr(), widget.complaint.categoryId),
-                  _buildDivider(),
-                  _buildDetailRow( "details_city".tr(), widget.complaint.cityId),
-                  _buildDivider(),
-                  _buildDetailRow(  "details_Quarters".tr(), widget.complaint.quarterId),
-                  _buildDivider(),
-                  _buildDetailRow( "details_flat".tr(), widget.complaint.flatId),
-                  // _buildDivider(),
-                  // _buildDetailRow(
-                  //   'Complaint Remarks',
-                  //   widget.complaint.remarks,
-                  //   showEmpty: true,
-                  // ),
-                  _buildDivider(),
-                  _buildDetailRow(
-                     "details_Complaintdate".tr(),
-                    DateFormat(
-                      'd MMM yyyy',
-                    ).format(DateTime.parse(widget.complaint.complaintDate)),
-                  ),
-                  _buildDivider(),
-                  _buildDetailRow(
-                     "details_artisanvisitdate".tr(),
-                    DateFormat('d MMM yyyy').format(
-                      DateTime.parse(widget.complaint.artisansVisitDate),
-                    ),
-                  ),
-                  _buildDivider(),
-                ],
-              ),
-            ),
-            ResponsiveSizedBox.height30,
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
+                TextButton(
                   onPressed: () {
                     CustomNavigation.pop(context);
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Appcolors.kprimaryColor,
-                    foregroundColor: Colors.white,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Appcolors.kprimarytextColor,
+                    backgroundColor: Appcolors.kwhitecolor,
                     padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 14,
+                      vertical: 8,
+                      horizontal: 10,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                   child: Row(
@@ -120,7 +69,110 @@ class _ScreenComplaintdetailsPageState
                     ],
                   ),
                 ),
-                ResponsiveSizedBox.width30,
+
+                // ResponsiveSizedBox.width10,
+                Container(
+                  // width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextStyles.subheadline(
+                    text: 'Complaint #${widget.complaint.complaintId}',
+                  ),
+                ),
+              ],
+            ),
+            ResponsiveSizedBox.height10,
+            ImageWithFallback(
+              imageUrl: widget.complaint.imageAddress,
+              height: ResponsiveUtils.hp(30),
+              width: ResponsiveUtils.screenWidth,
+            ),
+            // Details Card
+            ResponsiveSizedBox.height20,
+            Container(
+              color: const Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  _buildDetailRow(
+                    "details_department".tr(),
+                    widget.complaint.departmentId,
+                  ),
+                  _buildDivider(),
+                  _buildDetailRow(
+                    "details_category".tr(),
+                    widget.complaint.categoryId,
+                  ),
+                  _buildDivider(),
+                  _buildDetailRow("details_city".tr(), widget.complaint.cityId),
+                  _buildDivider(),
+                  _buildDetailRow(
+                    "details_Quarters".tr(),
+                    widget.complaint.quarterId,
+                  ),
+                  _buildDivider(),
+                  _buildDetailRow("details_flat".tr(), widget.complaint.flatId),
+                  // _buildDivider(),
+                  // _buildDetailRow(
+                  //   'Complaint Remarks',
+                  //   widget.complaint.remarks,
+                  //   showEmpty: true,
+                  // ),
+                  _buildDivider(),
+                  _buildDetailRow(
+                    "details_Complaintdate".tr(),
+                    DateFormat(
+                      'd MMM yyyy',
+                    ).format(DateTime.parse(widget.complaint.complaintDate)),
+                  ),
+                  _buildDivider(),
+                  _buildDetailRow(
+                    "details_artisanvisitdate".tr(),
+                    DateFormat('d MMM yyyy').format(
+                      DateTime.parse(widget.complaint.artisansVisitDate),
+                    ),
+                  ),
+                  _buildDivider(),
+                ],
+              ),
+            ),
+            ResponsiveSizedBox.height20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _showOTPDialog(context); // ✅ just open dialog
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Appcolors.kwhitecolor,
+                      backgroundColor: Appcolors.kredcolor,
+                      side: const BorderSide(color: Appcolors.kredcolor),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.cancel_outlined, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          'Close Complaint',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                ResponsiveSizedBox.width20,
+                ///////////////////////
                 Expanded(
                   child: BlocConsumer<RequestOtpBloc, RequestOtpState>(
                     listener: (context, state) {
@@ -244,7 +296,10 @@ class _ScreenComplaintdetailsPageState
                           side: const BorderSide(
                             color: Appcolors.ksecondaryColor,
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            //horizontal: 16,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -313,6 +368,193 @@ class _ScreenComplaintdetailsPageState
           ),
         ],
       ),
+    );
+  }
+
+  void _showOTPDialog(BuildContext context) {
+    final TextEditingController otpController = TextEditingController();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    String? otpError;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (dialogContext, setState) {
+            return AlertDialog(
+              backgroundColor: Appcolors.kwhitecolor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: Appcolors.ksecondaryColor, width: 1.5),
+              ),
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.security,
+                    size: ResponsiveUtils.wp(5),
+                    color: Appcolors.kprimaryColor,
+                  ),
+                  ResponsiveSizedBox.width20,
+                  Text(
+                    "Enter OTP",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: ResponsiveUtils.wp(5),
+                      color: Appcolors.kprimaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              content: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Please enter the OTP to close this complaint:',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Appcolors.kblackcolor,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      cursorColor: Appcolors.kprimaryColor,
+                      controller: otpController,
+                      keyboardType: TextInputType.number,
+                      maxLength: 4,
+                      decoration: InputDecoration(
+                        labelText: 'OTP',
+                        hintText: 'Enter 4-digit OTP',
+                        prefixIcon: const Icon(Icons.pin),
+                        errorText: otpError,
+                        // Border when focused
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue, width: 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        // Border when there's an error
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        // Border when focused AND error exists
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter OTP';
+                        }
+                        if (value.length != 4) {
+                          return 'OTP must be 4 digits';
+                        }
+                        return null;
+                      },
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(4),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actionsPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Appcolors.kblackcolor,
+                  ),
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+
+                BlocConsumer<CloseComplaintBloc, CloseComplaintState>(
+                  listener: (context, state) {
+                    if (state is CloseComplaintErrorState) {
+                      setState(() {
+                        otpError = state.message; // ✅ show error below field
+                      });
+                    } else if (state is CloseComplaintSuccessState) {
+                      Navigator.of(dialogContext).pop();
+                      CustomSnackbar.show(
+                        context,
+                        message: state.message,
+                        type: SnackbarType.success,
+                      );
+                      navigateToMainPageNamed(context, 0);
+                    }
+                  },
+                  builder: (context, state) {
+                    final bool isLoading = state is CloseComplaintLoadingState;
+
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Appcolors.kprimaryColor,
+                        foregroundColor: Appcolors.kwhitecolor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 20,
+                        ),
+                      ),
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              if (formKey.currentState!.validate()) {
+                                setState(
+                                  () => otpError = null,
+                                ); // clear old error
+                                context.read<CloseComplaintBloc>().add(
+                                  CloseComplaintButtonClickEvent(
+                                    complaintId: widget.complaint.complaintId,
+                                    otp: otpController.text.trim(),
+                                  ),
+                                );
+                              }
+                            },
+                      child: isLoading
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+
+                              children: [
+                                Container(
+                                  width: ResponsiveUtils.wp(24),
+                                  child: Center(
+                                    child: SpinKitWave(
+                                      size: 15,
+                                      color: Appcolors.kwhitecolor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Text(
+                              'Close Complaint',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

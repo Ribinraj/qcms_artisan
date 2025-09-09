@@ -14,6 +14,7 @@ import 'package:qcms_artisan/domain/repositories/loginrepo.dart';
 import 'package:qcms_artisan/firebase_options.dart';
 
 import 'package:qcms_artisan/presentation/bloc/bottom_navigation_bloc/bottom_navigation_bloc_bloc.dart';
+import 'package:qcms_artisan/presentation/bloc/close_complaint_bloc/close_complaint_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/connectivity_bloc/connectivity_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/delete_account_bloc/delete_account_bloc.dart';
 import 'package:qcms_artisan/presentation/bloc/fetch_complaint_categories/fetch_complaint_categories_bloc.dart';
@@ -123,6 +124,10 @@ void main() async {
                        BlocProvider(
             create: (context) => RegisterArtisanBloc(repository: LoginRepo()),
           ),
+                         BlocProvider(
+            create: (context) => CloseComplaintBloc(repository: LoginRepo()),
+          ),
+
         ],
         child: const MyApp(),
       ),

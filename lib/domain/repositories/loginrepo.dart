@@ -14,7 +14,7 @@ class ApiResponse<T> {
   final T? data;
   final String message;
   final bool error;
-  final int status;  
+  final int status;
 
   ApiResponse({
     this.data,
@@ -78,11 +78,12 @@ class LoginRepo {
       );
     }
   }
-  ///////////// registerartisan/////////////
-  Future<ApiResponse>registerartisan({required  RegisterArtisanModel artisan}) async {
-    try {
-   
 
+  ///////////// registerartisan/////////////
+  Future<ApiResponse> registerartisan({
+    required RegisterArtisanModel artisan,
+  }) async {
+    try {
       Response response = await dio.post(
         Endpoints.registerartisan,
         data: artisan,
@@ -90,7 +91,6 @@ class LoginRepo {
 
       final responseData = response.data;
       if (!responseData["error"] && responseData["status"] == 200) {
-     
         // final customerType = responseData["data"]["customerType"].toString();
         return ApiResponse(
           data: null,
@@ -117,6 +117,7 @@ class LoginRepo {
       );
     }
   }
+
   // ///////////// verifyotp/////////////
   Future<ApiResponse> verifyotp({
     required String otp,
@@ -197,57 +198,57 @@ class LoginRepo {
       );
     }
   }
-  
-  // // ////////////////fetchprofile///////////////////
-    Future<ApiResponse<Profilemodel>> fetchprofile() async {
-      try {
-        final token = await getUserToken();
-        log(token);
-        Response response = await dio.get(
-          Endpoints.fetchprofile,
-          options: Options(headers: {'Authorization': token}),
-        );
-        log("Response received: ${response.statusCode}");
-        final responseData = response.data;
-        log("Response data: $responseData");
- 
-        if (!responseData["error"] && responseData["status"] == 200) {
-          final user = Profilemodel.fromJson(responseData["data"]);
 
-          return ApiResponse(
-            data: user,
-            message: responseData['message'] ?? 'Success',
-            error: false,
-            status: responseData["status"],
-          );
-        } else {
-          return ApiResponse(
-            data: null,
-            message: responseData['message'] ?? 'Something went wrong',
-            error: true,
-            status: responseData["status"],
-          );
-        }
-      } on DioException catch (e) {
-        debugPrint(e.message);
-        log(e.toString());
+  // // ////////////////fetchprofile///////////////////
+  Future<ApiResponse<Profilemodel>> fetchprofile() async {
+    try {
+      final token = await getUserToken();
+      log(token);
+      Response response = await dio.get(
+        Endpoints.fetchprofile,
+        options: Options(headers: {'Authorization': token}),
+      );
+      log("Response received: ${response.statusCode}");
+      final responseData = response.data;
+      log("Response data: $responseData");
+
+      if (!responseData["error"] && responseData["status"] == 200) {
+        final user = Profilemodel.fromJson(responseData["data"]);
+
         return ApiResponse(
-          data: null,
-          message: 'Network or server error occurred',
-          error: true,
-          status: 500,
+          data: user,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
         );
-      } catch (e) {
-        // Add a general catch block for other exceptions
-        log("Unexpected error: $e");
+      } else {
         return ApiResponse(
           data: null,
-          message: 'Unexpected error: $e',
+          message: responseData['message'] ?? 'Something went wrong',
           error: true,
-          status: 500,
+          status: responseData["status"],
         );
       }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    } catch (e) {
+      // Add a general catch block for other exceptions
+      log("Unexpected error: $e");
+      return ApiResponse(
+        data: null,
+        message: 'Unexpected error: $e',
+        error: true,
+        status: 500,
+      );
     }
+  }
 
   // //   ///////////////update token/////////////////
   Future<void> updatetoken({required String token}) async {
@@ -257,7 +258,7 @@ class LoginRepo {
       Response response = await dio.post(
         Endpoints.settoken,
         options: Options(headers: {'Authorization': userToken}),
-        data: { "pushToken": token}
+        data: {"pushToken": token},
       );
 
       final responseData = response.data;
@@ -270,13 +271,16 @@ class LoginRepo {
       log("Error updating FCM token: $e");
     }
   }
-//   /////////////deleteAccount/////////////
-  Future<ApiResponse>deleteaccount({required String reason}) async {
+
+  //   /////////////deleteAccount/////////////
+  Future<ApiResponse> deleteaccount({required String reason}) async {
     try {
-       final token = await getUserToken();
-      Response response =
-          await dio.post(Endpoints.deleteaccount, 
-             options: Options(headers: {'Authorization': token}),data: { "reason":reason});
+      final token = await getUserToken();
+      Response response = await dio.post(
+        Endpoints.deleteaccount,
+        options: Options(headers: {'Authorization': token}),
+        data: {"reason": reason},
+      );
 
       final responseData = response.data;
       if (!responseData["error"] && responseData["status"] == 200) {
@@ -305,6 +309,49 @@ class LoginRepo {
       );
     }
   }
+
+  // ///////////// closecomplaint/////////////
+  Future<ApiResponse> closeComplaint({
+    required String complaintId,
+    required String complaintOTP,
+  }) async {
+    try {
+      final token = await getUserToken();
+      Response response = await dio.post(
+        Endpoints.closeComplaint,
+        options: Options(headers: {'Authorization': token}),
+        data: {"complaintId": complaintId, "complaintOTP": complaintOTP},
+      );
+
+      final responseData = response.data;
+
+      if (!responseData["error"] && responseData["status"] == 200) {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Success',
+          error: false,
+          status: responseData["status"],
+        );
+      } else {
+        return ApiResponse(
+          data: null,
+          message: responseData['message'] ?? 'Something went wrong',
+          error: true,
+          status: responseData["status"],
+        );
+      }
+    } on DioException catch (e) {
+      debugPrint(e.message);
+      log(e.toString());
+      return ApiResponse(
+        data: null,
+        message: 'Network or server error occurred',
+        error: true,
+        status: 500,
+      );
+    }
+  }
+
   void dispose() {
     dio.close();
   }

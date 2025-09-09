@@ -15,4 +15,5 @@ class Endpoints {
   static const fetchcomplaintcategories = 'consumer/masters/categories';
   static const deleteaccount = 'artisans/login/deleteaccount';
   static const registerartisan = 'artisans/login/register';
+  static const closeComplaint = 'artisans/login/closecomplaint';
 }
